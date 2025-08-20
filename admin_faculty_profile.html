@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Profile - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* Admin/Faculty Theme */
+            --sidebar-bg: #0D2B28; /* Dark Teal */
+            --primary-teal: #14746F;
+            --light-teal-bg: #E0F2F1;
+            
+            --text-dark: #212529;
+            --text-light: #6C757D;
+            --bg-color: #F8F9FA;
+            --border-color: #DEE2E6;
+            --white-color: #FFFFFF;
+            --star-color: #FBBF24; /* Amber-400 for stars */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* --- Main Layout --- */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            width: 16rem;
+            transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 30;
+            overflow-y: auto; /* Added for scrolling */
+        }
+        .sidebar.collapsed { width: 5rem; }
+
+        /* --- Custom Scrollbar for Sidebar --- */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #2c5d58; /* A slightly lighter shade of the sidebar */
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #3a7a73;
+        }
+
+        .content-wrapper {
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .admin-main {
+            padding: 2rem 2.5rem;
+        }
+        
+        .card {
+            background-color: var(--white-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+        }
+        
+        .sidebar.collapsed .icon-text { opacity: 0; width: 0; }
+        .sidebar.collapsed .sidebar-toggle i { transform: rotate(180deg); }
+        
+        .star-rating .fa-star {
+            color: var(--star-color);
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+            .sidebar.open { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar flex flex-col p-4 text-gray-200">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-user-shield text-3xl text-white"></i>
+                    <span class="font-serif text-2xl font-bold whitespace-nowrap icon-text">Admin Panel</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle hidden lg:block cursor-pointer p-2 rounded-full hover:bg-white/10">
+                    <i class="fas fa-chevron-left transition-transform duration-300"></i>
+                </button>
+            </div>
+            <nav class="mt-10 space-y-2 flex-grow">
+                <a href="/admin_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-tachometer-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Dashboard</span>
+                </a>
+                <a href="/admin_student_filter_page.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-users w-6 text-center text-lg"></i><span class="icon-text ml-4">Students</span>
+                </a>
+                <a href="/admin_faculty_list.html" class="flex items-center py-3 px-4 rounded-lg bg-white/10 text-white">
+                    <i class="fas fa-chalkboard-teacher w-6 text-center text-lg"></i><span class="icon-text ml-4 font-semibold">Faculty</span>
+                </a>
+                <a href="/admin_announcement_maker.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-bullhorn w-6 text-center text-lg"></i><span class="icon-text ml-4">Announcements</span>
+                </a>
+                <a href="/admin_assignments.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-list w-6 text-center text-lg"></i><span class="icon-text ml-4">Assignments</span>
+                </a>
+                <a href="/admin_library.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-book-bookmark w-6 text-center text-lg"></i><span class="icon-text ml-4">Library</span>
+                </a>
+                <a href="/admin_create_panel.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sitemap w-6 text-center text-lg"></i><span class="icon-text ml-4">Create Panel</span>
+                </a>
+                <a href="/admin_offline_test.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-upload w-6 text-center text-lg"></i><span class="icon-text ml-4">Offline Test</span>
+                </a>
+                <a href="/admin_test_creation.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-file-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Online Test</span>
+                </a>
+                <a href="/admin_student_verify.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-user-check w-6 text-center text-lg"></i><span class="icon-text ml-4">Student Verification</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <a href="#" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sign-out-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <main class="admin-main">
+                <!-- Header -->
+                <header class="mb-8">
+                    <h1 class="font-serif text-4xl font-bold text-text-dark">Faculty Profile</h1>
+                    <p class="text-md text-text-light mt-1">Detailed information and student feedback for faculty members.</p>
+                </header>
+
+                <!-- Profile Details Card -->
+                <div class="card p-6 mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Left Column: Photo and Basic Info -->
+                        <div class="md:col-span-1 flex flex-col items-center text-center">
+                            <div class="w-32 h-32 bg-gray-200 rounded-full mb-4 flex items-center justify-center">
+                                <i class="fas fa-user fa-4x text-gray-400"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-text-dark">Dr. Anjali Sharma</h2>
+                            <p class="text-text-light">12 Years of Experience</p>
+                        </div>
+                        <!-- Right Column: Detailed Info -->
+                        <div class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-semibold text-gray-500 text-sm uppercase tracking-wider">Contact Info</h4>
+                                <p class="mt-2 text-text-dark"><i class="fas fa-phone-alt w-5 text-text-light"></i> +91 98765 43210</p>
+                                <p class="mt-2 text-text-dark"><i class="fas fa-map-marker-alt w-5 text-text-light"></i> A-123, Scholars Apartments, Thane</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-500 text-sm uppercase tracking-wider">Qualifications</h4>
+                                <p class="mt-2 text-text-dark">Ph.D. in Physics, IIT Bombay</p>
+                                <p class="mt-2 text-text-dark">M.Sc. in Physics, Delhi University</p>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <h4 class="font-semibold text-gray-500 text-sm uppercase tracking-wider">Courses Taught</h4>
+                                <div class="mt-2 flex flex-wrap gap-2">
+                                    <span class="bg-teal-100 text-teal-800 text-sm font-medium px-3 py-1 rounded-full">JEE Mains Physics</span>
+                                    <span class="bg-teal-100 text-teal-800 text-sm font-medium px-3 py-1 rounded-full">NEET Physics</span>
+                                    <span class="bg-teal-100 text-teal-800 text-sm font-medium px-3 py-1 rounded-full">12th CBSE Board Prep</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Reviews Card -->
+                <div class="card">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-text-dark">Student Reviews (Anonymous)</h3>
+                        <div class="space-y-5">
+                            <!-- Review 1 -->
+                            <div class="border-b pb-4">
+                                <div class="flex items-center mb-1">
+                                    <div class="star-rating">
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                    </div>
+                                    <span class="text-sm text-text-light ml-2">- August 15, 2025</span>
+                                </div>
+                                <p class="text-text-dark">"Anjali ma'am is the best physics teacher I've ever had. Her concepts are crystal clear and she makes difficult topics seem easy."</p>
+                            </div>
+                            <!-- Review 2 -->
+                            <div class="border-b pb-4">
+                                <div class="flex items-center mb-1">
+                                    <div class="star-rating">
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star text-gray-300"></i>
+                                    </div>
+                                    <span class="text-sm text-text-light ml-2">- August 12, 2025</span>
+                                </div>
+                                <p class="text-text-dark">"Very good teacher. Sometimes the class pace is a bit fast, but she is always willing to help after class."</p>
+                            </div>
+                            <!-- Review 3 -->
+                            <div class="border-b pb-4">
+                                <div class="flex items-center mb-1">
+                                    <div class="star-rating">
+                                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                    </div>
+                                    <span class="text-sm text-text-light ml-2">- August 10, 2025</span>
+                                </div>
+                                <p class="text-text-dark">"Her notes are extremely helpful for revision. She explains everything with real-world examples which makes learning fun."</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Sidebar Toggle Functionality ---
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('collapsed');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty List - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* Admin/Faculty Theme */
+            --sidebar-bg: #0D2B28; /* Dark Teal */
+            --primary-teal: #14746F;
+            --light-teal-bg: #E0F2F1;
+            
+            --text-dark: #212529;
+            --text-light: #6C757D;
+            --bg-color: #F8F9FA;
+            --border-color: #DEE2E6;
+            --white-color: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* --- Main Layout --- */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            width: 16rem;
+            transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 30;
+            overflow-y: auto; /* Added for scrolling */
+        }
+        .sidebar.collapsed { width: 5rem; }
+
+        /* --- Custom Scrollbar for Sidebar --- */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #2c5d58; /* A slightly lighter shade of the sidebar */
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #3a7a73;
+        }
+
+        .content-wrapper {
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .admin-main {
+            padding: 2rem 2.5rem;
+        }
+        
+        .card {
+            background-color: var(--white-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        }
+        
+        .sidebar.collapsed .icon-text { opacity: 0; width: 0; }
+        .sidebar.collapsed .sidebar-toggle i { transform: rotate(180deg); }
+        
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+            .sidebar.open { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar flex flex-col p-4 text-gray-200">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-user-shield text-3xl text-white"></i>
+                    <span class="font-serif text-2xl font-bold whitespace-nowrap icon-text">Admin Panel</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle hidden lg:block cursor-pointer p-2 rounded-full hover:bg-white/10">
+                    <i class="fas fa-chevron-left transition-transform duration-300"></i>
+                </button>
+            </div>
+            <nav class="mt-10 space-y-2 flex-grow">
+                <a href="/admin_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-tachometer-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Dashboard</span>
+                </a>
+                <a href="/admin_student_filter_page.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-users w-6 text-center text-lg"></i><span class="icon-text ml-4">Students</span>
+                </a>
+                <a href="/admin_faculty_list.html" class="flex items-center py-3 px-4 rounded-lg bg-white/10 text-white">
+                    <i class="fas fa-chalkboard-teacher w-6 text-center text-lg"></i><span class="icon-text ml-4 font-semibold">Faculty</span>
+                </a>
+                <a href="/admin_announcement_maker.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-bullhorn w-6 text-center text-lg"></i><span class="icon-text ml-4">Announcements</span>
+                </a>
+                <a href="/admin_assignments.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-list w-6 text-center text-lg"></i><span class="icon-text ml-4">Assignments</span>
+                </a>
+                <a href="/admin_library.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-book-bookmark w-6 text-center text-lg"></i><span class="icon-text ml-4">Library</span>
+                </a>
+                <a href="/admin_create_panel.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sitemap w-6 text-center text-lg"></i><span class="icon-text ml-4">Create Panel</span>
+                </a>
+                <a href="/admin_offline_test.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-upload w-6 text-center text-lg"></i><span class="icon-text ml-4">Offline Test</span>
+                </a>
+                <a href="/admin_test_creation.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-file-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Online Test</span>
+                </a>
+                <a href="/admin_student_verify.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-user-check w-6 text-center text-lg"></i><span class="icon-text ml-4">Student Verification</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <a href="#" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sign-out-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <main class="admin-main">
+                <!-- Header -->
+                <header class="mb-8">
+                    <h1 class="font-serif text-4xl font-bold text-text-dark">Faculty Directory</h1>
+                    <p class="text-md text-text-light mt-1">Browse, filter, and manage all faculty members.</p>
+                </header>
+
+                <!-- Filters and Sort -->
+                <div class="card p-4 mb-8 flex flex-wrap items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <label for="course-filter" class="text-sm font-medium text-gray-700">Filter by Course:</label>
+                        <select id="course-filter" class="block pl-3 pr-8 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                            <option value="all">All Courses</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Maths">Maths</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <label for="sort-by" class="text-sm font-medium text-gray-700">Sort by:</label>
+                        <select id="sort-by" class="block pl-3 pr-8 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                            <option value="name-asc">Name (A-Z)</option>
+                            <option value="name-desc">Name (Z-A)</option>
+                            <option value="exp-desc">Experience (High to Low)</option>
+                            <option value="exp-asc">Experience (Low to High)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Faculty Grid -->
+                <div id="faculty-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Faculty Card 1 -->
+                    <a href="/admin_faculty_profile.html" class="faculty-card card p-4 text-center block" data-name="Dr. Anjali Sharma" data-experience="12" data-courses="Physics">
+                        <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-user fa-3x text-gray-400"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-text-dark">Dr. Anjali Sharma</h3>
+                        <p class="text-text-light text-sm">12 Years Experience</p>
+                        <div class="mt-3 flex flex-wrap justify-center gap-2">
+                            <span class="bg-teal-100 text-teal-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Physics</span>
+                        </div>
+                    </a>
+                    <!-- Faculty Card 2 -->
+                    <a href="/admin_faculty_profile.html" class="faculty-card card p-4 text-center block" data-name="Mr. Vikram Singh" data-experience="8" data-courses="Maths">
+                        <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-user fa-3x text-gray-400"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-text-dark">Mr. Vikram Singh</h3>
+                        <p class="text-text-light text-sm">8 Years Experience</p>
+                        <div class="mt-3 flex flex-wrap justify-center gap-2">
+                             <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Maths</span>
+                        </div>
+                    </a>
+                    <!-- Faculty Card 3 -->
+                    <a href="/admin_faculty_profile.html" class="faculty-card card p-4 text-center block" data-name="Mrs. Sunita Rao" data-experience="15" data-courses="Chemistry">
+                        <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-user fa-3x text-gray-400"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-text-dark">Mrs. Sunita Rao</h3>
+                        <p class="text-text-light text-sm">15 Years Experience</p>
+                        <div class="mt-3 flex flex-wrap justify-center gap-2">
+                            <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Chemistry</span>
+                        </div>
+                    </a>
+                     <!-- Faculty Card 4 -->
+                    <a href="/admin_faculty_profile.html" class="faculty-card card p-4 text-center block" data-name="Dr. Rajesh Kumar" data-experience="10" data-courses="Physics,Maths">
+                        <div class="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                            <i class="fas fa-user fa-3x text-gray-400"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-text-dark">Dr. Rajesh Kumar</h3>
+                        <p class="text-text-light text-sm">10 Years Experience</p>
+                        <div class="mt-3 flex flex-wrap justify-center gap-2">
+                             <span class="bg-teal-100 text-teal-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Physics</span>
+                             <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">Maths</span>
+                        </div>
+                    </a>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Sidebar Toggle Functionality ---
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('collapsed');
+                });
+            }
+
+            // --- Filter and Sort Functionality ---
+            const courseFilter = document.getElementById('course-filter');
+            const sortBy = document.getElementById('sort-by');
+            const facultyGrid = document.getElementById('faculty-grid');
+            const facultyCards = Array.from(document.querySelectorAll('.faculty-card'));
+
+            function updateGrid() {
+                // 1. Filter
+                const selectedCourse = courseFilter.value;
+                facultyCards.forEach(card => {
+                    const cardCourses = card.dataset.courses;
+                    if (selectedCourse === 'all' || cardCourses.includes(selectedCourse)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // 2. Sort
+                const sortValue = sortBy.value;
+                const sortedCards = facultyCards.sort((a, b) => {
+                    const nameA = a.dataset.name.toLowerCase();
+                    const nameB = b.dataset.name.toLowerCase();
+                    const expA = parseInt(a.dataset.experience);
+                    const expB = parseInt(b.dataset.experience);
+
+                    switch (sortValue) {
+                        case 'name-asc':
+                            return nameA.localeCompare(nameB);
+                        case 'name-desc':
+                            return nameB.localeCompare(nameA);
+                        case 'exp-desc':
+                            return expB - expA;
+                        case 'exp-asc':
+                            return expA - expB;
+                        default:
+                            return 0;
+                    }
+                });
+
+                // 3. Re-append to grid
+                sortedCards.forEach(card => facultyGrid.appendChild(card));
+            }
+
+            courseFilter.addEventListener('change', updateGrid);
+            sortBy.addEventListener('change', updateGrid);
+
+            // Initial call to set the grid correctly on page load
+            updateGrid();
+        });
+    </script>
+</body>
+</html>

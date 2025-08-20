@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Attendance Report - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* Admin/Faculty Theme */
+            --sidebar-bg: #0D2B28; /* Dark Teal */
+            --primary-teal: #14746F;
+            --light-teal-bg: #E0F2F1;
+            
+            --text-dark: #212529;
+            --text-light: #6C757D;
+            --bg-color: #F8F9FA;
+            --border-color: #DEE2E6;
+            --white-color: #FFFFFF;
+            --success-color: #16A34A;
+            --danger-color: #DC2626;
+            --warning-color: #FBBF24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* --- Main Layout --- */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            width: 16rem;
+            transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 30;
+            overflow-y: auto; /* Ensures sidebar is scrollable */
+        }
+        .sidebar.collapsed { width: 5rem; }
+
+        /* --- Custom Scrollbar for Sidebar --- */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #2c5d58;
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #3a7a73;
+        }
+
+        .content-wrapper {
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .admin-main {
+            padding: 2rem 2.5rem;
+        }
+        
+        .card {
+            background-color: var(--white-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+        }
+        
+        /* Table Styling */
+        .attendance-table th, .attendance-table td {
+            white-space: nowrap;
+            text-align: center;
+            padding: 0.75rem 0.5rem;
+        }
+        .attendance-table th:first-child, .attendance-table td:first-child {
+            position: sticky;
+            left: 0;
+            background-color: var(--white-color);
+            z-index: 10;
+            text-align: left;
+            width: 200px;
+        }
+        .attendance-table tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 0.5rem;
+        }
+
+        .sidebar.collapsed .icon-text { opacity: 0; width: 0; }
+        .sidebar.collapsed .sidebar-toggle i { transform: rotate(180deg); }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+            .sidebar.open { transform: translateX(0); }
+            #mobileMenuButton { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar flex flex-col p-4 text-gray-200">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-user-shield text-3xl text-white"></i>
+                    <span class="font-serif text-2xl font-bold whitespace-nowrap icon-text">Admin Panel</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle hidden lg:block cursor-pointer p-2 rounded-full hover:bg-white/10">
+                    <i class="fas fa-chevron-left transition-transform duration-300"></i>
+                </button>
+            </div>
+            <nav class="mt-10 space-y-2 flex-grow">
+                <a href="/admin_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-tachometer-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Dashboard</span>
+                </a>
+                <a href="/admin_student_filter_page.html" class="flex items-center py-3 px-4 rounded-lg bg-white/10 text-white">
+                    <i class="fas fa-users w-6 text-center text-lg"></i><span class="icon-text ml-4 font-semibold">Students</span>
+                </a>
+                <a href="/admin_faculty_list.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-chalkboard-teacher w-6 text-center text-lg"></i><span class="icon-text ml-4">Faculty</span>
+                </a>
+                <a href="/admin_announcement_maker.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-bullhorn w-6 text-center text-lg"></i><span class="icon-text ml-4">Announcements</span>
+                </a>
+                <a href="/admin_assignments.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-list w-6 text-center text-lg"></i><span class="icon-text ml-4">Assignments</span>
+                </a>
+                <a href="/admin_library.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-book-bookmark w-6 text-center text-lg"></i><span class="icon-text ml-4">Library</span>
+                </a>
+                <a href="/admin_create_panel.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sitemap w-6 text-center text-lg"></i><span class="icon-text ml-4">Create Panel</span>
+                </a>
+                <a href="/admin_offline_test.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-upload w-6 text-center text-lg"></i><span class="icon-text ml-4">Offline Test</span>
+                </a>
+                <a href="/admin_test_creation.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-file-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Online Test</span>
+                </a>
+                <a href="/admin_student_verify.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-user-check w-6 text-center text-lg"></i><span class="icon-text ml-4">Student Verification</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <a href="#" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sign-out-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <main class="admin-main">
+                <!-- Header -->
+                <header class="mb-8">
+                    <h1 class="font-serif text-4xl font-bold text-text-dark">Group Attendance Report</h1>
+                    <p class="text-md text-text-light mt-1">View monthly attendance for filtered groups of students.</p>
+                </header>
+
+                <!-- Filters Card -->
+                <div class="card p-6 mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+                        <!-- Search Bar -->
+                        <div class="lg:col-span-2">
+                            <label for="search-filter" class="block text-sm font-medium text-gray-700">Search Student</label>
+                            <div class="relative mt-1">
+                                <input type="text" id="search-filter" placeholder="Enter name or ID..." class="w-full pl-10 pr-4 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                                <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            </div>
+                        </div>
+                        <!-- Standard Filter -->
+                        <div>
+                            <label for="standard-filter" class="block text-sm font-medium text-gray-700">Standard</label>
+                            <select id="standard-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                                <option>11th</option>
+                                <option>12th</option>
+                            </select>
+                        </div>
+                        <!-- Board Filter -->
+                        <div>
+                            <label for="board-filter" class="block text-sm font-medium text-gray-700">Board</label>
+                            <select id="board-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                                <option>CBSE</option>
+                                <option>ICSE</option>
+                            </select>
+                        </div>
+                        <!-- Batch Filter -->
+                        <div>
+                            <label for="batch-filter" class="block text-sm font-medium text-gray-700">Batch</label>
+                            <select id="batch-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                                <option>Weekend A</option>
+                                <option>Weekday B</option>
+                            </select>
+                        </div>
+                        <!-- Month Filter -->
+                        <div>
+                            <label for="month-filter" class="block text-sm font-medium text-gray-700">Month</label>
+                            <input type="month" id="month-filter" value="2025-08" class="mt-1 block w-full pl-3 pr-2 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Student Table -->
+                <div class="card p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full attendance-table">
+                            <thead id="table-head" class="bg-gray-50">
+                                <!-- Header will be generated by JS -->
+                            </thead>
+                            <tbody id="table-body">
+                                <!-- Body will be generated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const monthInput = document.getElementById('month-filter');
+            const tableHead = document.getElementById('table-head');
+            const tableBody = document.getElementById('table-body');
+            const searchInput = document.getElementById('search-filter');
+
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+            });
+
+            const mockStudents = [
+                { name: 'Ananya S. Sharma', id: 'BMS-10234' },
+                { name: 'Rohan Verma', id: 'BMS-10235' },
+                { name: 'Priya Singh', id: 'BMS-10236' },
+                { name: 'Amit Patel', id: 'BMS-10237' },
+                { name: 'Sneha Reddy', id: 'BMS-10238' },
+            ];
+
+            function generateTable() {
+                const [year, month] = monthInput.value.split('-').map(Number);
+                const daysInMonth = new Date(year, month, 0).getDate();
+
+                // Generate Table Header
+                let headerHTML = '<tr><th class="p-3 text-sm font-semibold text-text-light rounded-tl-lg">Student Name</th>';
+                for (let i = 1; i <= daysInMonth; i++) {
+                    headerHTML += `<th class="w-12">${i}</th>`;
+                }
+                headerHTML += '</tr>';
+                tableHead.innerHTML = headerHTML;
+
+                // Generate Table Body
+                let bodyHTML = '';
+                const statuses = ['P', 'A', 'L'];
+                const iconClasses = {
+                    'P': 'text-green-600',
+                    'A': 'text-red-600',
+                    'L': 'text-yellow-500'
+                };
+                const bgClasses = {
+                    'P': 'bg-green-100',
+                    'A': 'bg-red-100',
+                    'L': 'bg-yellow-100'
+                };
+                const statusIcons = {
+                    'P': 'fa-check',
+                    'A': 'fa-times',
+                    'L': 'fa-clock'
+                };
+                
+                mockStudents.forEach(student => {
+                    bodyHTML += `<tr class="border-b border-gray-100 student-row" data-name="${student.name.toLowerCase()}">`;
+                    bodyHTML += `<td class="p-4 font-medium">${student.name}</td>`;
+                    for (let i = 1; i <= daysInMonth; i++) {
+                        const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+                        bodyHTML += `<td class="${bgClasses[randomStatus]}"><i class="fa-solid ${statusIcons[randomStatus]} ${iconClasses[randomStatus]}"></i></td>`;
+                    }
+                    bodyHTML += '</tr>';
+                });
+                tableBody.innerHTML = bodyHTML;
+            }
+            
+            function filterTable() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const rows = tableBody.querySelectorAll('.student-row');
+                rows.forEach(row => {
+                    const name = row.dataset.name;
+                    if (name.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            }
+
+            monthInput.addEventListener('change', generateTable);
+            searchInput.addEventListener('input', filterTable);
+
+            // Initial table generation
+            generateTable();
+        });
+    </script>
+</body>
+</html>

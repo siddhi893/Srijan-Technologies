@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Mid-Term Exam - Brilliant Minds Tuition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* Student Dashboard Custom Dark Blue Theme */
+            --sidebar-bg: #1B3C53; /* User's custom dark blue */
+            --primary-blue: #1B3C53; /* Using the same color for accents */
+            --light-blue-bg: #EBF2F8; /* A complementary light blue-gray */
+            
+            --text-dark: #212529;
+            --text-light: #6C757D;
+            --bg-color: #F8F9FA;
+            --border-color: #DEE2E6;
+            --white-color: #FFFFFF;
+            --danger-color: #DC2626;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* --- Main Layout --- */
+        .test-layout {
+            display: grid;
+            grid-template-columns: auto 1fr 320px; /* Sidebar, main content, and right sidebar */
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            width: 16rem;
+            transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 30;
+            overflow-y: auto; /* Ensures sidebar is scrollable */
+        }
+        .sidebar.collapsed { width: 5rem; }
+        
+        /* --- Custom Scrollbar for Sidebar --- */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #2c5d8a; /* A slightly lighter shade of the sidebar blue */
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #3e80c2;
+        }
+
+        .question-panel {
+            height: 100vh;
+            overflow-y: auto;
+            padding: 2rem 2.5rem;
+        }
+        
+        .navigation-panel {
+            height: 100vh;
+            background-color: var(--white-color);
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option-label:has(input:checked) {
+            border-color: var(--primary-blue);
+            background-color: var(--light-blue-bg);
+        }
+        
+        /* --- Question Palette Styling --- */
+        .palette-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+        }
+        .palette-btn.answered {
+            background-color: var(--primary-blue);
+            color: var(--white-color);
+            border-color: var(--primary-blue);
+        }
+        .palette-btn.current {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 2px var(--primary-blue);
+        }
+        .palette-btn:not(.answered):hover {
+            background-color: #f0f0f0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="test-layout">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar flex flex-col p-4 text-gray-200">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-graduation-cap text-3xl text-white"></i>
+                    <span class="font-serif text-2xl font-bold whitespace-nowrap icon-text">Brilliant Minds</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle hidden lg:block cursor-pointer p-2 rounded-full hover:bg-white/10">
+                    <i class="fas fa-chevron-left transition-transform duration-300"></i>
+                </button>
+            </div>
+            <nav class="mt-10 space-y-2 flex-grow">
+                <a href="student_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-tachometer-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Dashboard</span>
+                </a>
+                <a href="attendance_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-user w-6 text-center text-lg"></i><span class="icon-text ml-4">Attendance</span>
+                </a>
+                <a href="assignments_page.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-list w-6 text-center text-lg"></i><span class="icon-text ml-4">Assignments</span>
+                </a>
+                <a href="e_library.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-book-bookmark w-6 text-center text-lg"></i><span class="icon-text ml-4">Library</span>
+                </a>
+                <a href="fee_payment.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-money-check-dollar w-6 text-center text-lg"></i><span class="icon-text ml-4">Fee Payment</span>
+                </a>
+                <a href="test_section.html" class="flex items-center py-3 px-4 rounded-lg bg-white/10 text-white">
+                    <i class="fas fa-file-alt w-6 text-center text-lg"></i><span class="icon-text ml-4 font-semibold">Test Portal</span>
+                </a>
+                <a href="student_profile.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-user-circle w-6 text-center text-lg"></i><span class="icon-text ml-4">Profile</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <a href="#" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sign-out-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Question Panel -->
+        <div class="question-panel">
+            <header class="mb-6">
+                <p class="text-sm font-semibold" style="color: var(--primary-blue);">Physics Mid-Term Exam: Mechanics</p>
+                <h1 id="question-counter" class="font-serif text-3xl font-bold text-text-dark mt-1">Question 1 of 25</h1>
+            </header>
+
+            <div class="bg-white p-6 rounded-lg border border-gray-200">
+                <!-- Question Content -->
+                <div id="question-content" class="text-lg leading-relaxed mb-6">
+                    <!-- Question will be rendered here by JS -->
+                </div>
+                
+                <!-- Question Image (optional) -->
+                <div id="question-image-container" class="mb-6 hidden">
+                    <img id="question-image" src="" alt="Question Image" class="max-w-full md:max-w-md mx-auto rounded-lg shadow-sm">
+                </div>
+
+                <!-- Options -->
+                <div id="options-container" class="space-y-3">
+                    <!-- Options will be rendered here by JS -->
+                </div>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <div class="mt-6 flex justify-between items-center">
+                <button id="prev-btn" class="bg-white border border-gray-300 py-2 px-6 rounded-lg font-semibold hover:bg-gray-100 transition-colors">Previous</button>
+                <button id="next-btn" class="text-white py-2 px-8 rounded-lg font-semibold hover:opacity-90 transition-opacity" style="background-color: var(--primary-blue);">Next</button>
+            </div>
+        </div>
+
+        <!-- Right Navigation Panel -->
+        <div class="navigation-panel">
+            <!-- Timer -->
+            <div class="p-4 border-b border-gray-200 text-center">
+                <p class="text-sm text-text-light">Time Remaining</p>
+                <p id="timer" class="text-3xl font-bold text-danger-color">59:45</p>
+            </div>
+
+            <!-- Question Palette -->
+            <div class="p-4 flex-grow overflow-y-auto">
+                <h3 class="font-semibold mb-3">Question Palette</h3>
+                <div id="question-palette" class="grid grid-cols-5 gap-3">
+                    <!-- Palette buttons will be generated by JS -->
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="p-4 border-t border-gray-200">
+                <button class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors">Submit Test</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mock Test Data
+            const testData = [
+                {
+                    type: 'single',
+                    question: "A ball is thrown vertically upward. What is its velocity at the highest point?",
+                    image: null,
+                    options: ["Maximum", "Minimum but not zero", "Zero", "Depends on the mass of the ball"],
+                    answer: null
+                },
+                {
+                    type: 'multiple',
+                    question: "Which of the following are vector quantities? (Select all that apply)",
+                    image: null,
+                    options: ["Speed", "Velocity", "Distance", "Displacement", "Acceleration"],
+                    answer: []
+                },
+                {
+                    type: 'single',
+                    question: "According to Newton's second law, what is the relationship between force (F), mass (m), and acceleration (a)?",
+                    image: "https://placehold.co/600x200/EBF2F8/1B3C53?text=F=ma",
+                    options: ["F = m/a", "F = ma", "F = a/m", "m = Fa"],
+                    answer: null
+                },
+                // Add more questions as needed...
+            ];
+            for (let i = 4; i <= 25; i++) {
+                testData.push({ type: 'single', question: `This is sample question number ${i}. What is the correct option?`, image: null, options: [`Option A for Q${i}`, `Option B for Q${i}`, `Option C for Q${i}`, `Option D for Q${i}`], answer: null });
+            }
+
+            let currentQuestionIndex = 0;
+
+            const questionCounter = document.getElementById('question-counter');
+            const questionContent = document.getElementById('question-content');
+            const questionImageContainer = document.getElementById('question-image-container');
+            const questionImage = document.getElementById('question-image');
+            const optionsContainer = document.getElementById('options-container');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const questionPalette = document.getElementById('question-palette');
+
+            function renderQuestion(index) {
+                const question = testData[index];
+                questionCounter.textContent = `Question ${index + 1} of ${testData.length}`;
+                questionContent.textContent = question.question;
+
+                // Handle image
+                if (question.image) {
+                    questionImage.src = question.image;
+                    questionImageContainer.style.display = 'block';
+                } else {
+                    questionImageContainer.style.display = 'none';
+                }
+
+                // Render options
+                optionsContainer.innerHTML = '';
+                question.options.forEach((option, i) => {
+                    const optionId = `q${index}_option${i}`;
+                    const isSingle = question.type === 'single';
+                    const inputType = isSingle ? 'radio' : 'checkbox';
+                    
+                    const isChecked = isSingle ? (question.answer === i) : (question.answer.includes(i));
+
+                    const optionElement = document.createElement('label');
+                    optionElement.htmlFor = optionId;
+                    optionElement.className = 'option-label block p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-blue-500';
+                    
+                    optionElement.innerHTML = `
+                        <input type="${inputType}" id="${optionId}" name="q${index}_options" class="hidden" ${isChecked ? 'checked' : ''}>
+                        <span class="font-medium">${option}</span>
+                    `;
+                    optionsContainer.appendChild(optionElement);
+
+                    // Add event listener
+                    optionElement.querySelector('input').addEventListener('change', () => {
+                        if(isSingle) {
+                            testData[index].answer = i;
+                        } else {
+                            if (optionElement.querySelector('input').checked) {
+                                testData[index].answer.push(i);
+                            } else {
+                                testData[index].answer = testData[index].answer.filter(ans => ans !== i);
+                            }
+                        }
+                        updatePalette();
+                    });
+                });
+
+                updateNavButtons();
+                updatePalette();
+            }
+
+            function updateNavButtons() {
+                prevBtn.disabled = currentQuestionIndex === 0;
+                prevBtn.style.opacity = prevBtn.disabled ? '0.5' : '1';
+                
+                if (currentQuestionIndex === testData.length - 1) {
+                    nextBtn.textContent = 'Finish';
+                } else {
+                    nextBtn.textContent = 'Next';
+                }
+            }
+            
+            function updatePalette() {
+                questionPalette.innerHTML = '';
+                testData.forEach((q, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'palette-btn font-semibold';
+                    btn.textContent = i + 1;
+                    
+                    if (i === currentQuestionIndex) {
+                        btn.classList.add('current');
+                    }
+                    if ((q.type === 'single' && q.answer !== null) || (q.type === 'multiple' && q.answer.length > 0)) {
+                        btn.classList.add('answered');
+                    }
+
+                    btn.addEventListener('click', () => {
+                        currentQuestionIndex = i;
+                        renderQuestion(currentQuestionIndex);
+                    });
+                    questionPalette.appendChild(btn);
+                });
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentQuestionIndex < testData.length - 1) {
+                    currentQuestionIndex++;
+                    renderQuestion(currentQuestionIndex);
+                } else {
+                    // Handle test finish logic
+                    alert('Test Submitted!');
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    renderQuestion(currentQuestionIndex);
+                }
+            });
+
+            // Initial Render
+            renderQuestion(currentQuestionIndex);
+        });
+    </script>
+</body>
+</html>

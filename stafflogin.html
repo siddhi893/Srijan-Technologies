@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Login - Brilliant Minds Tuition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- Enhanced Color Palette & Font Setup (New Green Theme) --- */
+        :root {
+            --primary-bg: #FFFFFF; /* Main background, explicit white */
+            --secondary-bg-light-green: #D6EFD8; /* A very light green, for subtle variations */
+
+            --light-green-accent: #1F7D53; /* Lightest of the new greens, for highlights/accents */
+            --medium-green: #255F38; /* Medium green for main elements */
+            --dark-green: #27391C; /* Dark green for main text/sections */
+            --deep-dark-green: #18230F; /* Very dark green for deepest elements */
+
+            /* Re-mapping original variable names to new colors for consistency */
+            --light-cream: var(--primary-bg); /* Now white */
+            --oxford-blue: var(--medium-green); /* Used for titles, etc. */
+            --midnight-blue: var(--dark-green); /* Used for body text, dark sections */
+            --antique-gold: var(--light-green-accent); /* Used for highlights, primary buttons */
+            
+            /* Derived shades for gradients and specific elements */
+            --gold-light: #2A8C5D; /* Lighter variant of light-green-accent */
+            --gold-dark: #196F48; /* Darker variant of light-green-accent */
+            --navy-light: #307045; /* Lighter variant of medium-green */
+            --navy-dark: var(--deep-dark-green); /* Deepest dark green */
+
+            --white: #FFFFFF; /* Pure White */
+            --black: #000000; /* Pure Black */
+
+            /* Additional monochromatic greens for contrast */
+            --very-light-green: #EBF7EC; /* Even lighter green for text on dark backgrounds */
+            --text-on-dark: var(--primary-bg); /* White text on dark backgrounds */
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--secondary-bg-light-green); /* Light green background for login page */
+            color: var(--dark-green);
+            line-height: 1.6;
+            font-weight: 400;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure full viewport height */
+        }
+        
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Enhanced Color Classes */
+        .bg-light-cream { background-color: var(--primary-bg); }
+        .text-light-cream { color: var(--primary-bg); }
+        .bg-oxford-blue { background-color: var(--medium-green); }
+        .text-oxford-blue { color: var(--medium-green); }
+        .bg-midnight-blue { background-color: var(--dark-green); }
+        .text-midnight-blue { color: var(--dark-green); }
+        .bg-antique-gold { background-color: var(--light-green-accent); }
+        .text-antique-gold { color: var(--light-green-accent); }
+        .border-antique-gold { border-color: var(--light-green-accent); }
+
+        /* Luxury Button Styling */
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.875rem;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--light-green-accent), var(--gold-light));
+            color: var(--deep-dark-green);
+            box-shadow: 0 8px 25px rgba(31, 125, 83, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--gold-dark), var(--light-green-accent));
+            box-shadow: 0 15px 35px rgba(31, 125, 83, 0.4);
+        }
+        
+        /* Sophisticated Form Styling */
+        .luxury-form-input {
+            background-color: var(--white); /* White background for input */
+            border: 1px solid var(--medium-green); /* Border in medium green */
+            color: var(--dark-green); /* Text color in dark green */
+            transition: all 0.3s ease;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+        }
+        
+        .luxury-form-input:focus {
+            border-color: var(--light-green-accent); /* Accent green on focus */
+            box-shadow: 0 0 0 3px rgba(31, 125, 83, 0.3); /* Accent green shadow */
+            outline: none;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header for Login Page -->
+    <header class="bg-midnight-blue text-light-cream py-4 px-6 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="font-serif text-2xl font-bold">Brilliant Minds Tuition</h1>
+            <nav>
+                <a href="home_page.html" class="text-light-cream/80 hover:text-antique-gold transition-colors duration-300 text-sm font-semibold">Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content: Staff Login Form -->
+    <main class="flex-grow flex items-center justify-center py-16 px-4 bg-secondary-bg-light-green">
+        <div class="bg-white p-8 md:p-12 rounded-xl shadow-2xl max-w-md w-full text-center border-t-4 border-antique-gold">
+            <h2 class="font-serif text-4xl font-bold text-oxford-blue mb-8">Staff Login</h2>
+            <form class="space-y-6">
+                <div class="relative">
+                    <label for="staffId" class="sr-only">Staff ID</label>
+                    <input type="text" id="staffId" name="staffId" placeholder="Staff ID"
+                           class="luxury-form-input w-full p-4 pl-12 rounded-lg text-midnight-blue placeholder-midnight-blue/60">
+                    <i class="fas fa-user-tie absolute top-1/2 left-4 -translate-y-1/2 text-oxford-blue/70"></i>
+                </div>
+                <div class="relative">
+                    <label for="password" class="sr-only">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Password"
+                           class="luxury-form-input w-full p-4 pl-12 rounded-lg text-midnight-blue placeholder-midnight-blue/60">
+                    <i class="fas fa-lock absolute top-1/2 left-4 -translate-y-1/2 text-oxford-blue/70"></i>
+                </div>
+                <!-- <button onclick="location.href='admin_dashboard.html'" type="submit" class="btn btn-primary w-full text-lg mt-8"> -->
+                    <button onclick="location.href='admin_dashboard.html'" type="button" class="btn btn-primary w-full text-lg mt-8">
+                    <span class="relative z-10">Login</span>
+                    <i class="fas fa-sign-in-alt ml-3 relative z-10 group-hover:translate-x-2 transition-transform duration-300"></i>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer for Login Page -->
+    <footer class="bg-midnight-blue text-light-cream py-6 px-6 shadow-md mt-auto">
+        <div class="container mx-auto text-center">
+            <p class="text-sm opacity-80">&copy; 2025 Brilliant Minds Tuition. Developed by Your Name Here.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

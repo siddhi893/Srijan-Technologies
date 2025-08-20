@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Brilliant Minds Tuition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            /* Student Dashboard Custom Dark Blue Theme */
+            --sidebar-bg: #1B3C53; /* User's custom dark blue */
+            --primary-blue: #1B3C53; /* Using the same color for accents */
+            --light-blue-bg: #EBF2F8; /* A complementary light blue-gray */
+            
+            --text-dark: #212529;
+            --text-light: #6C757D;
+            --bg-color: #F8F9FA;
+            --border-color: #DEE2E6;
+            --white-color: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* --- Main Layout --- */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            width: 16rem;
+            transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 30;
+            overflow-y: auto; /* Ensures sidebar is scrollable */
+        }
+        .sidebar.collapsed { width: 5rem; }
+        
+        /* --- Custom Scrollbar for Sidebar --- */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #2c5d8a; /* A slightly lighter shade of the sidebar blue */
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #3e80c2;
+        }
+
+        .content-wrapper {
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .dashboard-main {
+            padding: 2rem 2.5rem;
+        }
+
+        /* --- Card & Tile Styling --- */
+        .card {
+            background-color: var(--white-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+            transition: box-shadow 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.07), 0 4px 6px -4px rgb(0 0 0 / 0.07);
+        }
+
+        .scrollable {
+            overflow-y: auto;
+            flex-grow: 1;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-blue) transparent;
+        }
+        .scrollable::-webkit-scrollbar { width: 5px; }
+        .scrollable::-webkit-scrollbar-thumb { background-color: var(--primary-blue); border-radius: 10px; }
+
+        .list-item-icon {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+        }
+        
+        .sidebar.collapsed .icon-text { opacity: 0; width: 0; }
+        .sidebar.collapsed .sidebar-toggle i { transform: rotate(180deg); }
+        
+        /* Predictive Analysis Animation */
+        @keyframes progress-animation {
+            from { stroke-dashoffset: 283; } /* Circumference of circle with r=45 */
+            to { stroke-dashoffset: 22.64; } /* 283 - (283 * 0.92) */
+        }
+        .progress-circle__progress {
+            stroke-dasharray: 283;
+            animation: progress-animation 2s 0.5s ease-out forwards;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .sidebar.collapsed {
+                transform: translateX(-100%);
+            }
+            #mobileMenuButton {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar flex flex-col p-4 text-gray-200">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-graduation-cap text-3xl text-white"></i>
+                    <span class="font-serif text-2xl font-bold whitespace-nowrap icon-text">Brilliant Minds</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle hidden lg:block cursor-pointer p-2 rounded-full hover:bg-white/10">
+                    <i class="fas fa-chevron-left transition-transform duration-300"></i>
+                </button>
+            </div>
+            <nav class="mt-10 space-y-2 flex-grow">
+                <a href="student_dashboard.html" class="flex items-center py-3 px-4 rounded-lg bg-white/10 text-white">
+                    <i class="fas fa-tachometer-alt w-6 text-center text-lg"></i><span class="icon-text ml-4 font-semibold">Dashboard</span>
+                </a>
+                <a href="attendance_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-user w-6 text-center text-lg"></i><span class="icon-text ml-4">Attendance</span>
+                </a>
+                <a href="assignments_page.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-list w-6 text-center text-lg"></i><span class="icon-text ml-4">Assignments</span>
+                </a>
+                <a href="e_library.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-book-bookmark w-6 text-center text-lg"></i><span class="icon-text ml-4">Library</span>
+                </a>
+                <a href="fee_payment.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-money-check-dollar w-6 text-center text-lg"></i><span class="icon-text ml-4">Fee Payment</span>
+                </a>
+                <a href="test_section.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-file-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Test Portal</span>
+                </a>
+                <a href="student_profile.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-user-circle w-6 text-center text-lg"></i><span class="icon-text ml-4">Profile</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <a href="#" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sign-out-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <main class="dashboard-main">
+                <!-- Header -->
+                <header class="flex flex-wrap justify-between items-center gap-4 mb-8">
+                    <div class="flex items-center">
+                        <button id="mobileMenuButton" class="lg:hidden text-gray-500 mr-4">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <div>
+                            <h1 class="font-serif text-4xl font-bold text-text-dark">Welcome, Ananya!</h1>
+                            <p class="text-md text-text-light mt-1">Ready to conquer your goals today? Let's get started. 💪</p>
+                        </div>
+                    </div>
+                    <button onclick = "location.href='chat_interface.html'" style="background-color: var(--primary-blue);" class="text-white font-semibold py-2 px-5 rounded-lg shadow-sm hover:opacity-90 transition-opacity duration-200 flex items-center gap-2">
+                        <i class="fa-solid fa-comments"></i>
+                        <span>Open Chat</span>
+                    </button>
+                </header>
+
+                <!-- Stat Tiles -->
+                <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="card p-5 flex items-center gap-5">
+                        <div class="list-item-icon" style="background-color: var(--light-blue-bg); color: var(--primary-blue);"><i class="fa-solid fa-clipboard-user"></i></div>
+                        <div>
+                            <p class="text-sm text-text-light font-medium">Attendance</p>
+                            <p class="text-2xl font-bold">95%</p>
+                        </div>
+                        <div class="ml-auto w-20 h-20">
+                            <canvas id="attendanceChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card p-5 flex items-center gap-5">
+                        <div class="list-item-icon" style="background-color: var(--light-blue-bg); color: var(--primary-blue);"><i class="fa-solid fa-bullseye"></i></div>
+                        <div>
+                            <p class="text-sm text-text-light font-medium">Predicted Score</p>
+                            <p class="text-2xl font-bold">92%</p>
+                        </div>
+                        <div class="ml-auto w-20 h-20">
+                            <svg class="w-full h-full" viewBox="0 0 100 100">
+                                <circle class="stroke-current text-gray-200" cx="50" cy="50" r="45" stroke-width="10" fill="none"></circle>
+                                <circle class="progress-circle__progress stroke-current" style="color: var(--primary-blue);" cx="50" cy="50" r="45" stroke-width="10" fill="none" stroke-linecap="round" transform="rotate(-90 50 50)"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="card p-5 flex items-center gap-5">
+                        <div class="list-item-icon bg-yellow-100 text-yellow-700"><i class="fa-solid fa-book"></i></div>
+                        <div>
+                            <p class="text-sm text-text-light font-medium">Courses Active</p>
+                            <p class="text-2xl font-bold">3</p>
+                        </div>
+                        <div class="ml-auto text-5xl text-yellow-300 opacity-50">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Main Content Panels -->
+                <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Added h-96 class to make card a fixed height, enabling scrolling -->
+                    <div class="card flex flex-col p-6 h-96">
+                        <h2 class="font-serif text-xl font-bold text-text-dark mb-4 flex-shrink-0">Upcoming Tests</h2>
+                        <div class="scrollable space-y-3 -mr-3 pr-3">
+                            <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50">
+                                <div class="list-item-icon bg-blue-100 text-blue-600"><i class="fa-solid fa-atom"></i></div>
+                                <div class="flex-grow">
+                                    <p class="font-semibold text-text-dark">Physics Test</p>
+                                    <p class="text-sm text-text-light">Topic: Kinematics</p>
+                                </div>
+                                <p class="text-sm font-bold text-text-dark">Aug 25</p>
+                            </div>
+                            <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50">
+                                <div class="list-item-icon bg-purple-100 text-purple-600"><i class="fa-solid fa-flask-vial"></i></div>
+                                <div class="flex-grow">
+                                    <p class="font-semibold text-text-dark">Chemistry Test</p>
+                                    <p class="text-sm text-text-light">Topic: Organic Chemistry</p>
+                                </div>
+                                <p class="text-sm font-bold text-text-dark">Aug 30</p>
+                            </div>
+                            <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50">
+                                <div class="list-item-icon bg-orange-100 text-orange-600"><i class="fa-solid fa-calculator"></i></div>
+                                <div class="flex-grow">
+                                    <p class="font-semibold text-text-dark">Math Test</p>
+                                    <p class="text-sm text-text-light">Topic: Calculus</p>
+                                </div>
+                                <p class="text-sm font-bold text-text-dark">Sep 5</p>
+                            </div>
+                             <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50">
+                                <div class="list-item-icon bg-red-100 text-red-600"><i class="fa-solid fa-book-open-reader"></i></div>
+                                <div class="flex-grow">
+                                    <p class="font-semibold text-text-dark">English Literature</p>
+                                    <p class="text-sm text-text-light">Topic: Shakespeare</p>
+                                </div>
+                                <p class="text-sm font-bold text-text-dark">Sep 10</p>
+                            </div>
+                             <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50">
+                                <div class="list-item-icon bg-gray-100 text-gray-600"><i class="fa-solid fa-laptop-code"></i></div>
+                                <div class="flex-grow">
+                                    <p class="font-semibold text-text-dark">Computer Science</p>
+                                    <p class="text-sm text-text-light">Topic: Data Structures</p>
+                                </div>
+                                <p class="text-sm font-bold text-text-dark">Sep 15</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Added h-96 class to make card a fixed height, enabling scrolling -->
+                    <div class="card flex flex-col p-6 h-96">
+                        <h2 class="font-serif text-xl font-bold text-text-dark mb-4 flex-shrink-0">Announcements</h2>
+                        <div class="scrollable space-y-3 -mr-3 pr-3">
+                           <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50">
+                                <div class="list-item-icon bg-yellow-100 text-yellow-600"><i class="fa-solid fa-om"></i></div>
+                                <div>
+                                    <p class="font-semibold text-text-dark">Ganesh Chaturthi Holiday</p>
+                                    <p class="text-sm text-text-light">No classes from Sep 7th to Sep 9th.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50">
+                               <div class="list-item-icon bg-green-100 text-green-600"><i class="fa-solid fa-file-arrow-down"></i></div>
+                                <div>
+                                    <p class="font-semibold text-text-dark">New Study Material</p>
+                                    <p class="text-sm text-text-light">Physics & Math notes updated.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50">
+                                <div class="list-item-icon bg-pink-100 text-pink-600"><i class="fa-solid fa-users"></i></div>
+                                <div>
+                                    <p class="font-semibold text-text-dark">Parent-Teacher Meeting</p>
+                                    <p class="text-sm text-text-light">Scheduled for Sep 25th.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50">
+                                <div class="list-item-icon" style="background-color:var(--light-blue-bg); color: var(--primary-blue);"><i class="fa-solid fa-money-check-dollar"></i></div>
+                                <div>
+                                    <p class="font-semibold text-text-dark">Fee Payment Reminder</p>
+                                    <p class="text-sm text-text-light">Last date for payment is Sep 30th.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50">
+                                <div class="list-item-icon" style="background-color:var(--light-blue-bg); color: var(--primary-blue);"><i class="fa-solid fa-book-journal-whills"></i></div>
+                                <div>
+                                    <p class="font-semibold text-text-dark">Library Books Return</p>
+                                    <p class="text-sm text-text-light">Please return overdue books by Friday.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('attendanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [95, 5],
+                        backgroundColor: ['#1B3C53', '#E9ECEF'],
+                        borderColor: 'transparent',
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '80%',
+                    plugins: { legend: { display: false }, tooltip: { enabled: false } }
+                }
+            });
+
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+            });
+            
+            mobileMenuButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                sidebar.classList.add('open');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!sidebar.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

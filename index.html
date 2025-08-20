@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Srijan Technologies - Your Partner in Educational Excellence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/phosphor-icons"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-bg {
+            background-color: #111827;
+            background-image: radial-gradient(circle at 1px 1px, #374151 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .cta-button {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-900">
+                Srijan<span class="text-blue-600">Tech</span>
+            </a>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#features" class="text-gray-600 hover:text-blue-600 transition duration-300">Features</a>
+                <a href="#contact" class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-700 cta-button">Enquire Now</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                <i class="ph-list text-3xl"></i>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#features" class="block py-2 text-gray-600 hover:text-blue-600">Features</a>
+            <a href="#contact" class="block mt-2 bg-blue-600 text-white text-center px-4 py-2 rounded-lg shadow-md hover:bg-blue-700">Enquire Now</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-bg text-white py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">Empowering Coaching Classes with Smart Technology</h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8">Integrated Student & Faculty Portals to streamline operations, enhance communication, and drive academic success.</p>
+                <a href="home_page.html" class="bg-blue-600 text-white px-8 py-4 rounded-lg shadow-lg text-lg font-semibold hover:bg-blue-700 cta-button inline-block">Free Demo</a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Features of Our All-in-One Platform</h2>
+                    <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Our application is packed with powerful features designed to streamline your operations, improve communication, and enhance the learning experience for everyone.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Feature Cards -->
+                    <div class="bg-white p-8 rounded-xl shadow-md feature-card border border-gray-200">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-blue-600 mb-6">
+                            <i class="ph-chats-circle text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Student-Teacher Chat</h3>
+                        <p class="text-gray-600">Facilitate secure and direct one-to-one communication between students and faculty for doubt clearing and mentorship.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-xl shadow-md feature-card border border-gray-200">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-blue-600 mb-6">
+                            <i class="ph-broadcast text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Multi-lingual Announcements</h3>
+                        <p class="text-gray-600">Send important updates via SMS, Email, and Portal notifications in multiple languages to reach all students and parents.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-xl shadow-md feature-card border border-gray-200">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-blue-600 mb-6">
+                            <i class="ph-exam text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Online & Offline Tests</h3>
+                        <p class="text-gray-600">Conduct online tests with auto-grading and manage offline test schedules & scores, all integrated into student profiles.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-xl shadow-md feature-card border border-gray-200">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-blue-600 mb-6">
+                            <i class="ph-chart-line-up text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">AI Performance Analytics</h3>
+                        <p class="text-gray-600">Utilize AI-powered predictive analysis to track student performance, identify at-risk students, and provide actionable insights.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-xl shadow-md feature-card border border-gray-200">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-blue-600 mb-6">
+                            <i class="ph-fingerprint text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Attendance & Biometrics</h3>
+                        <p class="text-gray-600">Log student attendance seamlessly with an optional biometric kit and analyze data through intuitive dashboards.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-xl shadow-md feature-card border border-gray-200">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-blue-600 mb-6">
+                            <i class="ph-currency-circle-dollar text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Fee Management</h3>
+                        <p class="text-gray-600">Automate fee collection, send reminders, generate invoices, and accept payments through multiple online modes.</p>
+                    </div>
+                    
+                    <div class="bg-white p-8 rounded-xl shadow-md feature-card border border-gray-200">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-blue-600 mb-6">
+                            <i class="ph-user-list text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Detailed Profiles</h3>
+                        <p class="text-gray-600">Maintain comprehensive, editable profiles for students and faculty, accessible to authorized users for a holistic view.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-xl shadow-md feature-card border border-gray-200">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-blue-600 mb-6">
+                            <i class="ph-books text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Integrated E-Library</h3>
+                        <p class="text-gray-600">Faculty can upload study materials, notes, and videos for specific batches or students, creating a rich digital library.</p>
+                    </div>
+                    
+                    <div class="bg-white p-8 rounded-xl shadow-md feature-card border border-gray-200">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-blue-600 mb-6">
+                            <i class="ph-chalkboard-teacher text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Course & Batch Management</h3>
+                        <p class="text-gray-600">Admins can easily create and manage custom courses and batches, assigning faculty and students with a few clicks.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-xl shadow-md feature-card border border-gray-200">
+                        <div class="flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-blue-600 mb-6">
+                            <i class="ph-graduation-cap text-3xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Alumni Achievement Display</h3>
+                        <p class="text-gray-600">Showcase success stories of past students on the homepage to inspire and motivate current students.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact/Enquiry Section -->
+        <section id="contact" class="py-20 bg-gray-100">
+            <div class="container mx-auto px-6">
+                 <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Ready to Transform Your Institute?</h2>
+                    <p class="text-gray-600 mt-4 max-w-2xl mx-auto">Fill out the form below for a personalized demo and quotation. Let's build the future of education together.</p>
+                </div>
+                <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-xl shadow-lg border border-gray-200">
+                    <form id="enquiry-form">
+                        <div class="grid md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                                <input type="text" id="name" name="name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                             <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                <input type="email" id="email" name="email" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            <label for="coaching-name" class="block text-sm font-medium text-gray-700 mb-1">Coaching Class Name</label>
+                            <input type="text" id="coaching-name" name="coaching-name" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div class="mb-6">
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Your Message</label>
+                            <textarea id="message" name="message" rows="4" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-lg shadow-md text-lg font-semibold hover:bg-blue-700 cta-button">Send Enquiry</button>
+                        </div>
+                    </form>
+                    <div id="form-feedback" class="mt-6 text-center"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white">
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-center md:text-left mb-4 md:mb-0">
+                    <h3 class="text-xl font-bold">Srijan<span class="text-blue-500">Tech</span></h3>
+                    <p class="text-gray-400 mt-1">Pioneering Educational Software Solutions.</p>
+                </div>
+                <div class="text-center">
+                    <p>&copy; <span id="year"></span> Srijan Technologies. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="hidden fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-opacity duration-300">
+        <i class="ph-arrow-up text-2xl"></i>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Set current year in footer
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Enquiry Form Submission
+            const enquiryForm = document.getElementById('enquiry-form');
+            const formFeedback = document.getElementById('form-feedback');
+            enquiryForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // In a real application, you would send this data to a server.
+                // For this demo, we'll just show a success message.
+                formFeedback.innerHTML = `<p class="text-green-600 font-semibold">Thank you for your enquiry! We will get back to you shortly.</p>`;
+                enquiryForm.reset();
+                setTimeout(() => {
+                    formFeedback.innerHTML = '';
+                }, 5000);
+            });
+            
+            // Scroll to Top Button
+            const scrollToTopButton = document.getElementById('scroll-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollToTopButton.classList.remove('hidden');
+                } else {
+                    scrollToTopButton.classList.add('hidden');
+                }
+            });
+            
+            scrollToTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

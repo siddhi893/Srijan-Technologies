@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Creation - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* Admin/Faculty Theme */
+            --sidebar-bg: #0D2B28; /* Dark Teal */
+            --primary-teal: #14746F;
+            --light-teal-bg: #E0F2F1;
+            
+            --text-dark: #212529;
+            --text-light: #6C757D;
+            --bg-color: #F8F9FA;
+            --border-color: #DEE2E6;
+            --white-color: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* --- Main Layout --- */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            width: 16rem;
+            transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 30;
+            overflow-y: auto; /* Added for scrolling */
+        }
+        .sidebar.collapsed { width: 5rem; }
+
+        /* --- Custom Scrollbar for Sidebar --- */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #2c5d58; /* A slightly lighter shade of the sidebar */
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #3a7a73;
+        }
+
+        .content-wrapper {
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .admin-main {
+            padding: 2rem 2.5rem;
+        }
+        
+        .card {
+            background-color: var(--white-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+        }
+        
+        .sidebar.collapsed .icon-text { opacity: 0; width: 0; }
+        .sidebar.collapsed .sidebar-toggle i { transform: rotate(180deg); }
+        
+        /* Custom styles for radio button */
+        .mcq-option input[type="radio"]:checked + label {
+            border-color: var(--primary-teal);
+            background-color: var(--light-teal-bg);
+            color: var(--primary-teal);
+            font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+            .sidebar.open { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar flex flex-col p-4 text-gray-200">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-user-shield text-3xl text-white"></i>
+                    <span class="font-serif text-2xl font-bold whitespace-nowrap icon-text">Admin Panel</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle hidden lg:block cursor-pointer p-2 rounded-full hover:bg-white/10">
+                    <i class="fas fa-chevron-left transition-transform duration-300"></i>
+                </button>
+            </div>
+            <nav class="mt-10 space-y-2 flex-grow">
+                <a href="/admin_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-tachometer-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Dashboard</span>
+                </a>
+                <a href="/admin_student_filter_page.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-users w-6 text-center text-lg"></i><span class="icon-text ml-4">Students</span>
+                </a>
+                <a href="/admin_faculty_list.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-chalkboard-teacher w-6 text-center text-lg"></i><span class="icon-text ml-4">Faculty</span>
+                </a>
+                <a href="/admin_announcement_maker.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-bullhorn w-6 text-center text-lg"></i><span class="icon-text ml-4">Announcements</span>
+                </a>
+                <a href="/admin_assignments.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-list w-6 text-center text-lg"></i><span class="icon-text ml-4">Assignments</span>
+                </a>
+                <a href="/admin_library.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-book-bookmark w-6 text-center text-lg"></i><span class="icon-text ml-4">Library</span>
+                </a>
+                <a href="/admin_create_panel.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sitemap w-6 text-center text-lg"></i><span class="icon-text ml-4">Create Panel</span>
+                </a>
+                <a href="/admin_offline_test.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-upload w-6 text-center text-lg"></i><span class="icon-text ml-4">Offline Test</span>
+                </a>
+                <a href="/admin_test_creation.html" class="flex items-center py-3 px-4 rounded-lg bg-white/10 text-white">
+                    <i class="fas fa-file-alt w-6 text-center text-lg"></i><span class="icon-text ml-4 font-semibold">Online Test</span>
+                </a>
+                <a href="/admin_student_verify.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-user-check w-6 text-center text-lg"></i><span class="icon-text ml-4">Student Verification</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <a href="#" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sign-out-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <main class="admin-main">
+                <!-- Header -->
+                <header class="mb-8">
+                    <h1 class="font-serif text-4xl font-bold text-text-dark">Test Creation</h1>
+                    <p class="text-md text-text-light mt-1">Build and manage MCQ tests for students.</p>
+                </header>
+
+                <!-- Test Creator Card -->
+                <div class="card p-6 mb-8">
+                    <h3 class="text-xl font-semibold mb-2 text-text-dark">Create a New Test</h3>
+                    <div class="mb-4">
+                        <label for="test-title" class="block text-sm font-medium text-gray-700">Test Title</label>
+                        <input type="text" id="test-title" placeholder="e.g., Physics Chapter 5: Magnetism" class="mt-1 block w-full text-base border-gray-300 focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                    </div>
+                    
+                    <!-- NEW: Target Audience Filters -->
+                    <div class="mb-6 border-t pt-4">
+                         <h4 class="text-md font-semibold text-gray-800 mb-3">Target Audience</h4>
+                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                             <div>
+                                <label for="standard-filter" class="block text-sm font-medium text-gray-700">Standard</label>
+                                <select id="standard-filter" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-teal focus:border-primary-teal"><option>All Standards</option><option>11th</option><option>12th</option></select>
+                            </div>
+                            <div>
+                                <label for="board-filter" class="block text-sm font-medium text-gray-700">Board</label>
+                                <select id="board-filter" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-teal focus:border-primary-teal"><option>All Boards</option><option>CBSE</option><option>ICSE</option></select>
+                            </div>
+                             <div>
+                                <label for="course-filter" class="block text-sm font-medium text-gray-700">Course</label>
+                                <select id="course-filter" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-teal focus:border-primary-teal"><option>All Courses</option><option>JEE Mains</option><option>NEET</option></select>
+                            </div>
+                            <div>
+                                <label for="branch-filter" class="block text-sm font-medium text-gray-700">Branch</label>
+                                <select id="branch-filter" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-teal focus:border-primary-teal"><option>All Branches</option><option>Thane</option><option>Mumbai</option></select>
+                            </div>
+                            <div>
+                                <label for="school-filter" class="block text-sm font-medium text-gray-700">School</label>
+                                <select id="school-filter" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary-teal focus:border-primary-teal"><option>All Schools</option><option>Smt. Sulochanadevi Singhania</option></select>
+                            </div>
+                         </div>
+                    </div>
+                    
+                    <div id="questions-container" class="space-y-6 border-t pt-6">
+                        <!-- Question Block Template (will be cloned by JS) -->
+                    </div>
+
+                    <div class="mt-6 border-t pt-6 flex justify-between items-center">
+                        <button id="add-question-btn" class="bg-teal-100 text-teal-800 font-bold py-2 px-5 rounded-lg hover:bg-teal-200 transition-colors flex items-center gap-2">
+                            <i class="fas fa-plus"></i> Add Question
+                        </button>
+                        <button class="bg-teal-700 text-white font-bold py-2 px-8 rounded-lg shadow-md hover:bg-teal-800 transition-colors">
+                            Create Test
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Existing Tests List -->
+                <div class="card">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-text-dark">Existing Tests</h3>
+                        <div id="existing-tests-list" class="space-y-3">
+                            <!-- Example Test 1 (Past Date) -->
+                            <div class="flex flex-wrap justify-between items-center bg-gray-50 p-4 rounded-lg border">
+                                <div class="mb-2 sm:mb-0">
+                                    <p class="font-semibold text-text-dark">Physics Chapter 5: Magnetism</p>
+                                    <p class="text-sm text-text-light">15 Questions | Test Date: 10 Aug 2025</p>
+                                </div>
+                                <div class="flex gap-4">
+                                    <button class="text-teal-600 hover:text-teal-800 font-medium text-sm flex items-center gap-1"><i class="fas fa-chart-line"></i> Analytics</button>
+                                    <button class="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center gap-1"><i class="fas fa-edit"></i> View/Edit</button>
+                                    <button class="text-red-500 hover:text-red-700 font-medium text-sm flex items-center gap-1"><i class="fas fa-trash-alt"></i> Delete</button>
+                                </div>
+                            </div>
+                            <!-- Example Test 2 (Future Date) -->
+                            <div class="flex flex-wrap justify-between items-center bg-gray-50 p-4 rounded-lg border">
+                                <div class="mb-2 sm:mb-0">
+                                    <p class="font-semibold text-text-dark">Maths Weekly Test - Calculus</p>
+                                    <p class="text-sm text-text-light">20 Questions | Test Date: 25 Aug 2025</p>
+                                </div>
+                                <div class="flex gap-4">
+                                    <button class="text-blue-600 hover:text-blue-800 font-medium text-sm flex items-center gap-1"><i class="fas fa-edit"></i> View/Edit</button>
+                                    <button class="text-red-500 hover:text-red-700 font-medium text-sm flex items-center gap-1"><i class="fas fa-trash-alt"></i> Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Sidebar Toggle Functionality ---
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('collapsed');
+                });
+            }
+
+            // --- Test Creation Functionality ---
+            const addQuestionBtn = document.getElementById('add-question-btn');
+            const questionsContainer = document.getElementById('questions-container');
+            let questionCount = 0;
+
+            const createQuestionBlock = () => {
+                questionCount++;
+                const questionId = `q${questionCount}`;
+                const block = document.createElement('div');
+                block.className = 'question-block border bg-gray-50/50 p-4 rounded-lg';
+                block.innerHTML = `
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="font-semibold text-md text-text-dark">Question ${questionCount}</h4>
+                        <button class="remove-question-btn text-red-500 hover:text-red-700 text-sm"><i class="fas fa-times-circle"></i> Remove</button>
+                    </div>
+                    <textarea class="block w-full text-base border-gray-300 rounded-md mb-3" rows="3" placeholder="Enter the question text here..."></textarea>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700">Question Image (Optional)</label>
+                        <input type="file" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100"/>
+                    </div>
+                    <p class="text-sm font-medium text-gray-700 mb-2">Options (Select the correct answer)</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        ${['A', 'B', 'C', 'D'].map(opt => `
+                        <div class="mcq-option flex items-center">
+                            <input type="radio" name="correct-answer-${questionId}" id="option-${opt}-${questionId}" class="hidden">
+                            <label for="option-${opt}-${questionId}" class="flex-grow flex items-center p-2 border-2 rounded-md cursor-pointer transition-colors">
+                                <span class="font-bold text-gray-500 mr-3">${opt}</span>
+                                <input type="text" placeholder="Option ${opt}" class="w-full bg-transparent focus:outline-none">
+                            </label>
+                        </div>
+                        `).join('')}
+                    </div>
+                `;
+                questionsContainer.appendChild(block);
+            };
+
+            addQuestionBtn.addEventListener('click', createQuestionBlock);
+
+            questionsContainer.addEventListener('click', (e) => {
+                if (e.target.closest('.remove-question-btn')) {
+                    e.target.closest('.question-block').remove();
+                    // Optional: re-number questions after removal
+                }
+            });
+
+            // Add one question by default on page load
+            createQuestionBlock();
+        });
+    </script>
+</body>
+</html>

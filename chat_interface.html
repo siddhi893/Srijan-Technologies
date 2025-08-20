@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Messages - Brilliant Minds Tuition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* Student Dashboard Custom Dark Blue Theme */
+            --sidebar-bg: #1B3C53; /* User's custom dark blue */
+            --primary-blue: #1B3C53; /* Using the same color for accents */
+            --light-blue-bg: #EBF2F8; /* A complementary light blue-gray */
+            
+            --text-dark: #212529;
+            --text-light: #6C757D;
+            --bg-color: #F8F9FA;
+            --border-color: #DEE2E6;
+            --white-color: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* --- Main Layout --- */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            width: 16rem;
+            transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 30;
+            overflow-y: auto; /* Ensures sidebar is scrollable */
+        }
+        .sidebar.collapsed { width: 5rem; }
+        
+        /* --- Custom Scrollbar for Sidebar --- */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #2c5d8a; /* A slightly lighter shade of the sidebar blue */
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #3e80c2;
+        }
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 350px 1fr; /* Chat list and chat area */
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- Chat List Styling --- */
+        .chat-list {
+            background-color: var(--white-color);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        
+        .chat-list-item.active {
+            background-color: var(--light-blue-bg);
+            border-right: 3px solid var(--primary-blue);
+        }
+
+        /* --- Chat Area Styling --- */
+        .chat-area {
+            display: flex;
+            flex-direction: column;
+            background-color: var(--bg-color);
+            height: 100vh;
+        }
+
+        .message-bubble {
+            max-width: 70%;
+        }
+        .message-bubble.sent {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+        .message-bubble.received {
+            background-color: var(--white-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .sidebar.collapsed .icon-text { opacity: 0; width: 0; }
+        .sidebar.collapsed .sidebar-toggle i { transform: rotate(180deg); }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+            .sidebar.open { transform: translateX(0); }
+            #mobileMenuButton { display: block; }
+            .content-wrapper { grid-template-columns: 1fr; }
+            .chat-list {
+                /* On mobile, chat list could be a modal or take full screen */
+                /* For this example, we'll just show it. A real app might hide it. */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar flex flex-col p-4 text-gray-200">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-graduation-cap text-3xl text-white"></i>
+                    <span class="font-serif text-2xl font-bold whitespace-nowrap icon-text">Brilliant Minds</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle hidden lg:block cursor-pointer p-2 rounded-full hover:bg-white/10">
+                    <i class="fas fa-chevron-left transition-transform duration-300"></i>
+                </button>
+            </div>
+            <nav class="mt-10 space-y-2 flex-grow">
+                <a href="student_dashboard.html" class="flex items-center py-3 px-4 rounded-lg bg-white/10 text-white">
+                    <i class="fas fa-tachometer-alt w-6 text-center text-lg"></i><span class="icon-text ml-4 font-semibold">Dashboard</span>
+                </a>
+                <a href="attendance_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-user w-6 text-center text-lg"></i><span class="icon-text ml-4">Attendance</span>
+                </a>
+                <a href="assignments_page.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-list w-6 text-center text-lg"></i><span class="icon-text ml-4">Assignments</span>
+                </a>
+                <a href="e_library.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-book-bookmark w-6 text-center text-lg"></i><span class="icon-text ml-4">Library</span>
+                </a>
+                <a href="fee_payment.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-money-check-dollar w-6 text-center text-lg"></i><span class="icon-text ml-4">Fee Payment</span>
+                </a>
+                <a href="test_section.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-file-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Test Portal</span>
+                </a>
+                <a href="student_profile.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-user-circle w-6 text-center text-lg"></i><span class="icon-text ml-4">Profile</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <a href="#" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sign-out-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <!-- Chat List Panel -->
+            <div class="chat-list">
+                <div class="p-6 border-b border-gray-200">
+                    <h1 class="font-serif text-3xl font-bold">Messages</h1>
+                    <div class="relative mt-4">
+                        <input type="text" placeholder="Search chats..." class="w-full py-2 pl-10 pr-4 bg-gray-100 rounded-lg border-transparent focus:border-primary-blue focus:ring-0">
+                        <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+                <div class="flex-grow overflow-y-auto">
+                    <!-- Chat List Item - Active -->
+                    <div class="chat-list-item active flex items-center gap-4 p-4 cursor-pointer">
+                        <img src="https://placehold.co/50x50/EBF2F8/1B3C53?text=SR" alt="Avatar" class="w-12 h-12 rounded-full flex-shrink-0">
+                        <div class="w-full overflow-hidden">
+                            <div class="flex justify-between items-center">
+                                <p class="font-semibold text-text-dark truncate">Mr. Sharma (Physics)</p>
+                                <p class="text-xs text-text-light flex-shrink-0">10:30 AM</p>
+                            </div>
+                            <p class="text-sm text-text-light truncate">Okay, please submit it by tomorrow evening.</p>
+                        </div>
+                    </div>
+                    <!-- Chat List Item -->
+                    <div class="chat-list-item flex items-center gap-4 p-4 cursor-pointer hover:bg-gray-50">
+                        <img src="https://placehold.co/50x50/FEF2F2/B91C1C?text=KV" alt="Avatar" class="w-12 h-12 rounded-full flex-shrink-0">
+                        <div class="w-full overflow-hidden">
+                            <div class="flex justify-between items-center">
+                                <p class="font-semibold text-text-dark truncate">Kavya Verma</p>
+                                <p class="text-xs text-text-light flex-shrink-0">Yesterday</p>
+                            </div>
+                            <p class="text-sm text-text-light truncate">Hey! Did you finish the math homework?</p>
+                        </div>
+                    </div>
+                    <!-- Chat List Item -->
+                    <div class="chat-list-item flex items-center gap-4 p-4 cursor-pointer hover:bg-gray-50">
+                        <img src="https://placehold.co/50x50/E0F2FE/0891B2?text=AG" alt="Avatar" class="w-12 h-12 rounded-full flex-shrink-0">
+                        <div class="w-full overflow-hidden">
+                            <div class="flex justify-between items-center">
+                                <p class="font-semibold text-text-dark truncate">Admin Group</p>
+                                <p class="text-xs text-text-light flex-shrink-0">Aug 12</p>
+                            </div>
+                            <p class="text-sm text-text-light truncate">Reminder: Fee payment is due this Friday.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Area Panel -->
+            <div class="chat-area">
+                <!-- Chat Header -->
+                <div class="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+                    <div class="flex items-center gap-4">
+                        <img src="https://placehold.co/40x40/EBF2F8/1B3C53?text=SR" alt="Avatar" class="w-10 h-10 rounded-full">
+                        <div>
+                            <p class="font-bold text-lg">Mr. Sharma (Physics)</p>
+                            <p class="text-sm text-green-600">Online</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 text-gray-500">
+                        <button class="hover:text-primary-blue"><i class="fa-solid fa-phone text-xl"></i></button>
+                        <button class="hover:text-primary-blue"><i class="fa-solid fa-video text-xl"></i></button>
+                        <button class="hover:text-primary-blue"><i class="fa-solid fa-ellipsis-v text-xl"></i></button>
+                    </div>
+                </div>
+
+                <!-- Messages -->
+                <div class="flex-grow p-6 overflow-y-auto space-y-6">
+                    <!-- Received Message -->
+                    <div class="flex justify-start">
+                        <div class="message-bubble received p-3 rounded-lg rounded-bl-none">
+                            <p>Hi Ananya, I've received your assignment. I'll get back to you with feedback soon.</p>
+                            <p class="text-xs text-right text-gray-500 mt-1">10:28 AM</p>
+                        </div>
+                    </div>
+                    <!-- Sent Message -->
+                    <div class="flex justify-end">
+                        <div class="message-bubble sent p-3 rounded-lg rounded-br-none">
+                            <p>Thank you, sir. I had a question about the last problem, was my approach correct?</p>
+                            <p class="text-xs text-right text-white/70 mt-1">10:29 AM</p>
+                        </div>
+                    </div>
+                     <!-- Received Message -->
+                    <div class="flex justify-start">
+                        <div class="message-bubble received p-3 rounded-lg rounded-bl-none">
+                            <p>Yes, it was mostly correct, but you can simplify the final step. I've left a comment on the document.</p>
+                             <p class="text-xs text-right text-gray-500 mt-1">10:29 AM</p>
+                        </div>
+                    </div>
+                    <!-- Sent Message -->
+                    <div class="flex justify-end">
+                        <div class="message-bubble sent p-3 rounded-lg rounded-br-none">
+                            <p>Got it. I'll check the comments. Thanks again!</p>
+                            <p class="text-xs text-right text-white/70 mt-1">10:30 AM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Input -->
+                <div class="p-4 bg-white border-t border-gray-200">
+                    <div class="flex items-center gap-4">
+                        <button class="text-gray-500 hover:text-primary-blue"><i class="fa-solid fa-paperclip text-xl"></i></button>
+                        <input type="text" placeholder="Type a message..." class="w-full py-3 px-4 bg-gray-100 rounded-full border-transparent focus:border-primary-blue focus:ring-0">
+                        <button style="background-color: var(--primary-blue);" class="text-white rounded-full w-12 h-12 flex-shrink-0 flex items-center justify-center hover:opacity-90 transition-opacity">
+                            <i class="fa-solid fa-paper-plane text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            // A mobile menu button would be needed in a real app, but we'll omit the JS for this static example.
+            
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+            });
+        });
+    </script>
+</body>
+</html>

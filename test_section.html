@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tests & Assessments - Brilliant Minds Tuition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* Student Dashboard Custom Dark Blue Theme */
+            --sidebar-bg: #1B3C53; /* User's custom dark blue */
+            --primary-blue: #1B3C53; /* Using the same color for accents */
+            --light-blue-bg: #EBF2F8; /* A complementary light blue-gray */
+            
+            --text-dark: #212529;
+            --text-light: #6C757D;
+            --bg-color: #F8F9FA;
+            --border-color: #DEE2E6;
+            --white-color: #FFFFFF;
+            --danger-color: #DC2626;
+            --warning-color: #F59E0B;
+            --success-color: #16A34A;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* --- Main Layout --- */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            width: 16rem;
+            transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 30;
+            overflow-y: auto; /* Ensures sidebar is scrollable */
+        }
+        .sidebar.collapsed { width: 5rem; }
+
+        /* --- Custom Scrollbar for Sidebar --- */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #2c5d8a; /* A slightly lighter shade of the sidebar blue */
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #3e80c2;
+        }
+
+        .content-wrapper {
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .tests-main {
+            padding: 2rem 2.5rem;
+        }
+        
+        .card {
+            background-color: var(--white-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-pending { background-color: #FEE2E2; color: #B91C1C; }
+        .status-submitted { background-color: #FEF3C7; color: #B45309; }
+        .status-graded { background-color: #D1FAE5; color: #065F46; }
+
+        .sidebar.collapsed .icon-text { opacity: 0; width: 0; }
+        .sidebar.collapsed .sidebar-toggle i { transform: rotate(180deg); }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+            .sidebar.open { transform: translateX(0); }
+            #mobileMenuButton { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar flex flex-col p-4 text-gray-200">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-graduation-cap text-3xl text-white"></i>
+                    <span class="font-serif text-2xl font-bold whitespace-nowrap icon-text">Brilliant Minds</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle hidden lg:block cursor-pointer p-2 rounded-full hover:bg-white/10">
+                    <i class="fas fa-chevron-left transition-transform duration-300"></i>
+                </button>
+            </div>
+            <nav class="mt-10 space-y-2 flex-grow">
+                <a href="student_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-tachometer-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Dashboard</span>
+                </a>
+                <a href="attendance_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-user w-6 text-center text-lg"></i><span class="icon-text ml-4">Attendance</span>
+                </a>
+                <a href="assignments_page.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-list w-6 text-center text-lg"></i><span class="icon-text ml-4">Assignments</span>
+                </a>
+                <a href="e_library.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-book-bookmark w-6 text-center text-lg"></i><span class="icon-text ml-4">Library</span>
+                </a>
+                <a href="fee_payment.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-money-check-dollar w-6 text-center text-lg"></i><span class="icon-text ml-4">Fee Payment</span>
+                </a>
+                <a href="test_section.html" class="flex items-center py-3 px-4 rounded-lg bg-white/10 text-white">
+                    <i class="fas fa-file-alt w-6 text-center text-lg"></i><span class="icon-text ml-4 font-semibold">Test Portal</span>
+                </a>
+                <a href="student_profile.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-user-circle w-6 text-center text-lg"></i><span class="icon-text ml-4">Profile</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <a href="#" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sign-out-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <main class="tests-main">
+                <!-- Header -->
+                <header class="mb-8">
+                    <h1 class="font-serif text-4xl font-bold text-text-dark">Tests & Assessments</h1>
+                    <p class="text-md text-text-light mt-1">Attempt ongoing tests and review your past performance.</p>
+                </header>
+
+                <!-- Ongoing Test Section -->
+                <section class="mb-8">
+                    <h2 class="font-serif text-2xl font-bold text-text-dark mb-4">Ongoing Test</h2>
+                    <div class="card bg-light-blue-bg border-blue-200 p-6 flex flex-col md:flex-row items-center gap-6">
+                        <div class="text-5xl" style="color: var(--primary-blue);"><i class="fa-solid fa-hourglass-half"></i></div>
+                        <div class="flex-grow text-center md:text-left">
+                            <p class="font-semibold" style="color: var(--primary-blue);">Physics</p>
+                            <h3 class="font-bold text-xl text-text-dark mt-1">Mid-Term Exam: Mechanics</h3>
+                            <div class="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-1 text-sm text-text-light mt-2">
+                                <span><i class="fa-solid fa-list-ol mr-1"></i> 25 Questions</span>
+                                <span><i class="fa-solid fa-star mr-1"></i> 100 Marks</span>
+                                <span><i class="fa-solid fa-clock mr-1"></i> 60 Minutes</span>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <button onclick="location.href='test_portal.html'" class="text-white font-bold py-3 px-8 rounded-lg shadow-md hover:opacity-90 transition-all duration-300 transform hover:scale-105" style="background-color: var(--primary-blue);">
+                                Start Test
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Attempted Tests Section -->
+                <section>
+                    <h2 class="font-serif text-2xl font-bold text-text-dark mb-4">Attempted Tests</h2>
+                    <div class="card p-6">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="border-b-2 border-gray-200">
+                                    <tr>
+                                        <th class="p-3 text-sm font-semibold text-text-light">Test Title</th>
+                                        <th class="p-3 text-sm font-semibold text-text-light">Course</th>
+                                        <th class="p-3 text-sm font-semibold text-text-light">Date</th>
+                                        <th class="p-3 text-sm font-semibold text-text-light">Score</th>
+                                        <th class="p-3 text-sm font-semibold text-text-light"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="p-4 font-medium">Unit Test: Organic Compounds</td>
+                                        <td class="p-4 text-text-light">Chemistry</td>
+                                        <td class="p-4 text-text-light">Aug 10, 2025</td>
+                                        <td class="p-4 font-bold text-success-color">92 / 100</td>
+                                        <td class="p-4 text-right">
+                                            <a href="#" class="font-semibold hover:underline" style="color: var(--primary-blue);">View Details</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="p-4 font-medium">Monthly Test: Calculus</td>
+                                        <td class="p-4 text-text-light">Math</td>
+                                        <td class="p-4 text-text-light">Jul 28, 2025</td>
+                                        <td class="p-4 font-bold text-warning-color">78 / 100</td>
+                                        <td class="p-4 text-right">
+                                            <a href="#" class="font-semibold hover:underline" style="color: var(--primary-blue);">View Details</a>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100">
+                                        <td class="p-4 font-medium">Quiz: Data Structures</td>
+                                        <td class="p-4 text-text-light">Computer Science</td>
+                                        <td class="p-4 text-text-light">Jul 15, 2025</td>
+                                        <td class="p-4 font-bold text-success-color">45 / 50</td>
+                                        <td class="p-4 text-right">
+                                            <a href="#" class="font-semibold hover:underline" style="color: var(--primary-blue);">View Details</a>
+                                        </td>
+                                    </tr>
+                                     <tr>
+                                        <td class="p-4 font-medium">Unit Test: Kinematics</td>
+                                        <td class="p-4 text-text-light">Physics</td>
+                                        <td class="p-4 text-text-light">Jun 20, 2025</td>
+                                        <td class="p-4 font-bold text-danger-color">55 / 100</td>
+                                        <td class="p-4 text-right">
+                                            <a href="#" class="font-semibold hover:underline" style="color: var(--primary-blue);">View Details</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brilliant Minds Tuition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- Enhanced Color Palette & Font Setup (New Green & White Theme) --- */
+        :root {
+            --primary-bg: #FFFFFF; /* Main background, explicit white */
+            --secondary-bg-light-green: #D6EFD8; /* A very light green, for subtle variations */
+
+            --light-green-accent: #1F7D53; /* Lightest of the new greens, for highlights/accents */
+            --medium-green: #255F38; /* Medium green for main elements */
+            --dark-green: #27391C; /* Dark green for main text/sections */
+            --deep-dark-green: #18230F; /* Very dark green for deepest elements */
+
+            /* Re-mapping original variable names to new colors for consistency */
+            --light-cream: var(--primary-bg); /* Now white */
+            --oxford-blue: var(--medium-green); /* Used for titles, etc. */
+            --midnight-blue: var(--dark-green); /* Used for body text, dark sections */
+            --antique-gold: var(--light-green-accent); /* Used for highlights, primary buttons */
+            
+            /* Derived shades for gradients and specific elements */
+            --gold-light: #2A8C5D; /* Lighter variant of light-green-accent */
+            --gold-dark: #196F48; /* Darker variant of light-green-accent */
+            --navy-light: #307045; /* Lighter variant of medium-green */
+            --navy-dark: var(--deep-dark-green); /* Deepest dark green */
+
+            --white: #FFFFFF; /* Pure White */
+            --black: #000000; /* Pure Black */
+
+            /* Additional monochromatic greens for contrast */
+            --very-light-green: #EBF7EC; /* Even lighter green for text on dark backgrounds */
+            --text-on-dark: var(--primary-bg); /* White text on dark backgrounds */
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg); /* Default body background is white */
+            color: var(--dark-green); /* Default body text color is very dark green */
+            line-height: 1.6;
+            font-weight: 400;
+        }
+        
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Enhanced Color Classes (Updated to New Green Theme) */
+        .bg-light-cream { background-color: var(--primary-bg); }
+        .text-light-cream { color: var(--primary-bg); }
+        .bg-oxford-blue { background-color: var(--medium-green); }
+        .text-oxford-blue { color: var(--medium-green); }
+        .bg-midnight-blue { background-color: var(--dark-green); }
+        .text-midnight-blue { color: var(--dark-green); }
+        .bg-antique-gold { background-color: var(--light-green-accent); }
+        .text-antique-gold { color: var(--light-green-accent); }
+        .border-antique-gold { border-color: var(--light-green-accent); }
+
+        /* New Black/White text/bg classes */
+        .bg-white-custom { background-color: var(--white); }
+        .text-black-custom { color: var(--black); }
+
+
+        /* Premium Typography */
+        .text-display {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 800;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+        }
+        
+        .text-hero {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            font-weight: 300;
+            line-height: 1.5;
+            letter-spacing: 0.01em;
+        }
+        
+        .text-elegant {
+            font-weight: 500;
+            letter-spacing: 0.025em;
+        }
+
+        /* Luxury Button Styling */
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.875rem;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--light-green-accent), var(--gold-light));
+            color: var(--deep-dark-green);
+            box-shadow: 0 8px 25px rgba(31, 125, 83, 0.3); /* Updated shadow color */
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--gold-dark), var(--light-green-accent));
+            box-shadow: 0 15px 35px rgba(31, 125, 83, 0.4); /* Updated shadow color */
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--medium-green), var(--navy-light));
+            color: var(--primary-bg);
+            box-shadow: 0 8px 25px rgba(37, 95, 56, 0.3); /* Updated shadow color */
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, var(--dark-green), var(--medium-green));
+            box-shadow: 0 15px 35px rgba(37, 95, 56, 0.4); /* Updated shadow color */
+        }
+
+        /* Enhanced Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .reveal-delay-1 { transition-delay: 200ms; }
+        .reveal-delay-2 { transition-delay: 400ms; }
+        .reveal-delay-3 { transition-delay: 600ms; }
+        .reveal-delay-4 { transition-delay: 800ms; }
+
+        /* Luxury Card Styling */
+        .luxury-card {
+            background: var(--white); /* Explicitly white */
+            border: 1px solid rgba(31, 125, 83, 0.1); /* Updated */
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .luxury-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--light-green-accent), var(--gold-light));
+        }
+        
+        .luxury-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 35px 80px rgba(0,0,0,0.15);
+        }
+
+        /* Premium Section Backgrounds */
+        .premium-gradient {
+            background: linear-gradient(135deg, var(--secondary-bg-light-green) 0%, var(--primary-bg) 100%); /* Using new light green and white */
+            position: relative;
+        }
+        
+        .premium-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(31, 125, 83, 0.05) 0%, transparent 50%), /* Updated */
+                radial-gradient(circle at 80% 80%, rgba(37, 95, 56, 0.05) 0%, transparent 50%); /* Updated */
+        }
+
+        /* Elegant Dark Section */
+        .dark-luxury {
+            background: var(--deep-dark-green); /* Changed to solid deep-dark-green */
+            position: relative;
+        }
+        
+        .dark-luxury::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(31, 125, 83, 0.08) 0%, transparent 50%), /* Updated */
+                radial-gradient(circle at 70% 70%, rgba(37, 95, 56, 0.08) 0%, transparent 50%); /* Updated */
+        }
+
+        /* Enhanced Icon Styling */
+        .luxury-icon {
+            background: linear-gradient(135deg, var(--light-green-accent), var(--gold-light));
+            color: var(--deep-dark-green);
+            box-shadow: 0 15px 35px rgba(31, 125, 83, 0.3); /* Updated */
+            transition: all 0.4s ease;
+        }
+        
+        .luxury-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 20px 40px rgba(31, 125, 83, 0.4); /* Updated */
+        }
+
+        /* Sophisticated Form Styling */
+        .luxury-form-input {
+            background: linear-gradient(145deg, rgba(37, 95, 56, 0.4), rgba(37, 95, 56, 0.6)); /* Updated */
+            border: 2px solid rgba(31, 125, 83, 0.2); /* Updated */
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+        }
+        
+        .luxury-form-input:focus {
+            background: linear-gradient(145deg, rgba(37, 95, 56, 0.6), rgba(37, 95, 56, 0.8)); /* Updated */
+            border-color: var(--light-green-accent);
+            box-shadow: 0 0 20px rgba(31, 125, 83, 0.3); /* Updated */
+        }
+
+        /* Parallax Effect */
+        .parallax-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .parallax-element {
+            will-change: transform;
+        }
+
+        /* Subtle Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .floating { animation: float 6s ease-in-out infinite; }
+        
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background-size: 1000px 100%;
+            animation: shimmer 3s infinite;
+        }
+
+        /* Enhanced Typography Hierarchy */
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        
+        .section-subtitle {
+            font-size: clamp(1.125rem, 2vw, 1.25rem);
+            font-weight: 300;
+            letter-spacing: 0.01em;
+            line-height: 1.6;
+        }
+
+        /* Custom scrollbar for horizontal achievements */
+        .horizontal-scroll-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .horizontal-scroll-container::-webkit-scrollbar-track {
+            background: #e0e0e0;
+            border-radius: 10px;
+        }
+        .horizontal-scroll-container::-webkit-scrollbar-thumb {
+            background: var(--light-green-accent); /* Green scrollbar */
+            border-radius: 10px;
+        }
+        .horizontal-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: var(--gold-dark); /* Darker green on hover */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Enhanced Header -->
+    <header class="premium-gradient flex items-center relative py-10">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/5"></div>
+        </div>
+        <div class="container mx-auto px-6 lg:px-12 relative z-10">
+            <div class="grid lg:grid-cols-2 items-center gap-8 py-4">
+                <div class="text-center lg:text-left reveal">
+                    <div class="mb-4">
+                        <h1 class="font-serif text-display text-oxford-blue mb-4 leading-none">
+                            Unlock Your Academic 
+                            <span class="text-antique-gold relative">
+                                Potential
+                                <div class="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-antique-gold to-gold-light opacity-60"></div>
+                            </span>
+                        </h1>
+                        <p class="text-hero text-midnight-blue/80 mb-6 max-w-2xl mx-auto lg:mx-0">
+                            We provide elite, personalized tutoring that fosters excellence and builds foundations for lifelong success through innovative pedagogical approaches.
+                        </p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-2">
+                        <a href="studentlogin.html" class="btn btn-primary group">
+                            <span class="relative z-10">Student Portal</span>
+                            <i class="fas fa-user-graduate ml-3 relative z-10 group-hover:rotate-12 transition-transform duration-300"></i>
+                        </a>
+                        <a href="stafflogin.html" class="btn btn-secondary group">
+                            <span class="relative z-10">Educator Access</span>
+                            <i class="fas fa-chalkboard-teacher ml-3 relative z-10 group-hover:rotate-12 transition-transform duration-300"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="relative reveal reveal-delay-1">
+                    <div class="absolute inset-0 bg-gradient-to-br from-antique-gold/20 to-oxford-blue/20 rounded-3xl transform rotate-6 scale-105"></div>
+                    <div class="relative h-64 lg:h-[300px] w-full rounded-3xl overflow-hidden shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop" 
+                             alt="Students studying in a modern library" 
+                             class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Enhanced Features Section -->
+    <section class="py-16 bg-white-custom relative">
+        <div class="absolute inset-0 bg-gradient-to-br from-transparent via-antique-gold/5 to-transparent"></div>
+        <div class="container mx-auto px-6 lg:px-12 relative z-10">
+            <div class="text-center max-w-4xl mx-auto reveal mb-12">
+                <h2 class="font-serif section-title text-oxford-blue mb-5">The Brilliant Minds Distinction</h2>
+                <p class="section-subtitle text-midnight-blue/70">
+                    Our methodology transcends traditional tutoring through a synthesis of personalized attention, 
+                    cutting-edge pedagogical techniques, and unwavering commitment to academic excellence.
+                </p>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 gap-8 mt-12">
+                <div class="text-center reveal reveal-delay-1">
+                    <div class="luxury-card p-6 h-full">
+                        <div class="luxury-icon mx-auto rounded-full w-16 h-16 flex items-center justify-center mb-5 floating">
+                            <i class="fas fa-medal text-3xl"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-midnight-blue mb-3">Proven Excellence</h3>
+                        <p class="text-midnight-blue/70 text-sm leading-relaxed">
+                            An unparalleled track record of exceptional scores and admissions to the world's most prestigious universities, 
+                            establishing us as the premier choice for discerning families.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="text-center reveal reveal-delay-2">
+                    <div class="luxury-card p-6 h-full">
+                        <div class="luxury-icon mx-auto rounded-full w-16 h-16 flex items-center justify-center mb-5 floating" style="animation-delay: 2s;">
+                            <i class="fas fa-users text-3xl"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-midnight-blue mb-3">Elite Educators</h3>
+                        <p class="text-midnight-blue/70 text-sm leading-relaxed">
+                            Carefully curated masters and doctoral-level educators who combine deep subject expertise 
+                            with an unwavering passion for nurturing intellectual growth and academic achievement.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="text-center reveal reveal-delay-3">
+                    <div class="luxury-card p-6 h-full">
+                        <div class="luxury-icon mx-auto rounded-full w-16 h-16 flex items-center justify-center mb-5 floating" style="animation-delay: 4s;">
+                            <i class="fas fa-book-open text-3xl"></i>
+                        </div>
+                        <h3 class="font-serif text-xl font-bold text-midnight-blue mb-3">Bespoke Curriculum</h3>
+                        <p class="text-midnight-blue/70 text-sm leading-relaxed">
+                            Meticulously crafted, individualized study programmes that strategically address knowledge gaps 
+                            while amplifying inherent strengths to maximize academic potential.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider Line -->
+    <div class="border-t-8 border-light-green-accent mx-auto w-10/12 my-24"></div>
+
+    <!-- Enhanced Success Stories -->
+    <section class="py-16 bg-white-custom relative">
+        <div class="container mx-auto px-6 lg:px-12 relative z-10">
+            <div class="text-center max-w-4xl mx-auto reveal mb-12">
+                <h2 class="font-serif section-title text-oxford-blue mb-5">A Distinguished Legacy</h2>
+                <p class="section-subtitle text-midnight-blue/70">
+                    We honour the dedication and achievements of our exceptional students. Their success stories 
+                    represent the pinnacle of our educational philosophy and commitment to excellence.
+                </p>
+            </div>
+            
+            <!-- Horizontal Scroll Container for Achievement Cards -->
+            <div class="horizontal-scroll-container flex flex-nowrap space-x-6 pb-4 overflow-x-auto overflow-y-hidden scroll-smooth"> <!-- Added overflow-y-hidden -->
+                <div class="flex-none w-72 luxury-card overflow-hidden group reveal reveal-delay-1">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://placehold.co/400x300/1F7D53/27391C?text=Excellence+Achieved" 
+                             alt="Academic Excellence" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-serif text-lg font-bold mb-2 text-antique-gold">State Examination Distinction</h3>
+                        <p class="text-black-custom leading-relaxed text-xs">
+                            Jonathan D. achieved an exemplary 98% through rigorous preparation and our proven methodologies, 
+                            securing his position among the nation's academic elite.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex-none w-72 luxury-card overflow-hidden group reveal reveal-delay-2">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://placehold.co/400x300/255F38/D6EFD8?text=University+Success" 
+                             alt="University Success" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-serif text-lg font-bold mb-2 text-oxford-blue">Ivy League Admission</h3>
+                        <p class="text-black-custom leading-relaxed text-xs">
+                            Victoria S. secured admission to her first-choice Ivy League institution following our comprehensive 
+                            preparation programme, realizing her academic aspirations.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="flex-none w-72 luxury-card overflow-hidden group reveal reveal-delay-3">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://placehold.co/400x300/27391C/D6EFD8?text=National+Recognition" 
+                             alt="National Recognition" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-serif text-lg font-bold mb-2 text-midnight-blue">International Olympiad Champion</h3>
+                        <p class="text-black-custom leading-relaxed text-xs">
+                            Marcus J. claimed the gold medal at the International Science Olympiad, demonstrating exceptional 
+                            talent nurtured through our advanced enrichment programmes.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Add more cards for horizontal scrolling demonstration -->
+                <div class="flex-none w-72 luxury-card overflow-hidden group reveal reveal-delay-4">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://placehold.co/400x300/1F7D53/27391C?text=Scholarship+Award" 
+                             alt="Scholarship Award" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-serif text-lg font-bold mb-2 text-antique-gold">Prestigious Scholarship Recipient</h3>
+                        <p class="text-black-custom leading-relaxed text-xs">
+                            Emily R. was awarded a full scholarship to a leading institution, a testament to her dedication and our rigorous academic support.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex-none w-72 luxury-card overflow-hidden group reveal reveal-delay-1">
+                    <div class="h-48 overflow-hidden relative">
+                        <img src="https://placehold.co/400x300/255F38/D6EFD8?text=Math+Competition" 
+                             alt="Math Competition" 
+                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-serif text-lg font-bold mb-2 text-oxford-blue">Regional Math Olympiad Winner</h3>
+                        <p class="text-black-custom leading-relaxed text-xs">
+                            David K. secured first place in the Regional Mathematics Olympiad, showcasing his exceptional analytical skills.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Contact Section -->
+    <section id="enquiry" class="dark-luxury py-16 relative">
+        <div class="container mx-auto px-6 lg:px-12 max-w-4xl relative z-10">
+            <div class="text-center reveal mb-10">
+                <h2 class="font-serif section-title text-antique-gold mb-5">Begin Your Journey to Excellence</h2>
+                <p class="section-subtitle text-light-cream">
+                    Complete the enquiry form below to schedule your complimentary consultation with our academic advisors. 
+                    Discover how we can elevate your educational journey to unprecedented heights.
+                </p>
+            </div>
+            
+            <div class="luxury-card p-8 bg-transparent border-2 border-antique-gold/20 backdrop-blur-sm reveal reveal-delay-1">
+                <form class="space-y-5">
+                    <div class="grid md:grid-cols-2 gap-5">
+                        <div class="relative">
+                            <label for="name" class="block text-light-cream font-medium mb-1 text-elegant">Full Name</label>
+                            <input type="text" id="name" name="name" 
+                                   class="luxury-form-input w-full p-2 pl-9 rounded-xl text-light-cream placeholder-light-cream/50 focus:outline-none"
+                                   placeholder="Enter your full name">
+                            <i class="fas fa-user absolute top-1/2 left-2 -translate-y-1/2 text-light-cream/50 mt-1"></i>
+                        </div>
+                        <div class="relative">
+                            <label for="email" class="block text-light-cream font-medium mb-1 text-elegant">Email Address</label>
+                            <input type="email" id="email" name="email" 
+                                   class="luxury-form-input w-full p-2 pl-9 rounded-xl text-light-cream placeholder-light-cream/50 focus:outline-none"
+                                   placeholder="Enter your email address">
+                            <i class="fas fa-envelope absolute top-1/2 left-2 -translate-y-1/2 text-light-cream/50 mt-1"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="relative">
+                        <label for="phone" class="block text-light-cream font-medium mb-1 text-elegant">Contact Number</label>
+                        <input type="tel" id="phone" name="phone" 
+                               class="luxury-form-input w-full p-2 pl-9 rounded-xl text-light-cream placeholder-light-cream/50 focus:outline-none"
+                               placeholder="Enter your contact number">
+                        <i class="fas fa-phone absolute top-1/2 left-2 -translate-y-1/2 text-light-cream/50 mt-1"></i>
+                    </div>
+                    
+                    <div>
+                        <label for="message" class="block text-light-cream font-medium mb-1 text-elegant">Academic Goals & Requirements</label>
+                        <textarea id="message" name="message" rows="4" 
+                                 class="luxury-form-input w-full p-2 rounded-xl text-light-cream placeholder-light-cream/50 focus:outline-none"
+                                 placeholder="Please describe your academic objectives, current challenges, and how we can assist you in achieving excellence..."></textarea>
+                    </div>
+                    
+                    <div class="text-center pt-5">
+                        <button type="submit" class="btn btn-primary text-sm px-8 py-2 group">
+                            <span class="relative z-10">Schedule Consultation</span>
+                            <i class="fas fa-arrow-right ml-2 relative z-10 group-hover:translate-x-2 transition-transform duration-300"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Footer -->
+    <footer class="bg-midnight-blue py-10 relative">
+        <div class="absolute inset-0 bg-gradient-to-br from-oxford-blue/20 to-transparent"></div>
+        <div class="container mx-auto px-6 lg:px-12 text-center text-light-cream relative z-10">
+            <div class="max-w-4xl mx-auto">
+                <h3 class="font-serif text-2xl font-bold mb-4 text-antique-gold">Crafted with Distinction</h3>
+                <p class="text-base mb-8 text-light-cream/80 leading-relaxed">
+                   This sophisticated digital presence for <span class="font-semibold text-antique-gold">Brilliant Minds Tuition</span> 
+                   was meticulously designed and developed by <span class="font-semibold text-antique-gold">Your Name Here</span>, 
+                   specializing in creating premium, high-performance web experiences for distinguished institutions.
+                </p>
+                
+                <div class="flex justify-center space-x-5 mb-8">
+                    <a href="#" class="text-light-cream/60 hover:text-antique-gold transition-all duration-300 transform hover:scale-110" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin text-xl"></i>
+                    </a>
+                    <a href="#" class="text-light-cream/60 hover:text-antique-gold transition-all duration-300 transform hover:scale-110" aria-label="GitHub">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="#" class="text-light-cream/60 hover:text-antique-gold transition-all duration-300 transform hover:scale-110" aria-label="Email">
+                        <i class="fas fa-envelope text-xl"></i>
+                    </a>
+                </div>
+                
+                <div class="border-t border-light-cream/20 pt-5">
+                    <p class="text-light-cream/70 mb-2">&copy; 2025 Brilliant Minds Tuition. All Rights Reserved.</p>
+                    <p class="text-light-cream/50 text-xs">
+                        <a href="#" class="hover:text-antique-gold transition-colors duration-300">Privacy Policy</a> |
+                        <a href="#" class="hover:text-antique-gold transition-colors duration-300">Terms of Service</a> |
+                        <a href="#" class="hover:text-antique-gold transition-colors duration-300">Academic Standards</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced Intersection Observer for sophisticated animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        });
+
+        // Observe all reveal elements
+        const revealElements = document.querySelectorAll('.reveal');
+        revealElements.forEach((el) => observer.observe(el));
+
+        // Smooth parallax effect for enhanced visual depth
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.parallax-element');
+            
+            parallaxElements.forEach((element) => {
+                const speed = element.dataset.speed || 0.5;
+                const yPos = -(scrolled * speed);
+                element.style.transform = `translateY(${yPos}px)`; 
+            });
+        });
+
+        // Enhanced form interaction
+        const formInputs = document.querySelectorAll('.luxury-form-input');
+        formInputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.classList.remove('focused');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Verification - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* Admin/Faculty Theme */
+            --sidebar-bg: #0D2B28; /* Dark Teal */
+            --primary-teal: #14746F;
+            --light-teal-bg: #E0F2F1;
+            
+            --text-dark: #212529;
+            --text-light: #6C757D;
+            --bg-color: #F8F9FA;
+            --border-color: #DEE2E6;
+            --white-color: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* --- Main Layout --- */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            width: 16rem;
+            transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 30;
+            overflow-y: auto; /* Added for scrolling */
+        }
+        .sidebar.collapsed { width: 5rem; }
+
+        /* --- Custom Scrollbar for Sidebar --- */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #2c5d58; /* A slightly lighter shade of the sidebar */
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #3a7a73;
+        }
+
+        .content-wrapper {
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .admin-main {
+            padding: 2rem 2.5rem;
+        }
+        
+        .card {
+            background-color: var(--white-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+        }
+        
+        .sidebar.collapsed .icon-text { opacity: 0; width: 0; }
+        .sidebar.collapsed .sidebar-toggle i { transform: rotate(180deg); }
+        
+        .verification-card {
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+        .verification-card.removing {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+            .sidebar.open { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar flex flex-col p-4 text-gray-200">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-user-shield text-3xl text-white"></i>
+                    <span class="font-serif text-2xl font-bold whitespace-nowrap icon-text">Admin Panel</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle hidden lg:block cursor-pointer p-2 rounded-full hover:bg-white/10">
+                    <i class="fas fa-chevron-left transition-transform duration-300"></i>
+                </button>
+            </div>
+            <nav class="mt-10 space-y-2 flex-grow">
+                <a href="/admin_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-tachometer-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Dashboard</span>
+                </a>
+                <a href="/admin_student_filter_page.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-users w-6 text-center text-lg"></i><span class="icon-text ml-4">Students</span>
+                </a>
+                <a href="/admin_faculty_list.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-chalkboard-teacher w-6 text-center text-lg"></i><span class="icon-text ml-4">Faculty</span>
+                </a>
+                <a href="/admin_announcement_maker.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-bullhorn w-6 text-center text-lg"></i><span class="icon-text ml-4">Announcements</span>
+                </a>
+                <a href="/admin_assignments.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-list w-6 text-center text-lg"></i><span class="icon-text ml-4">Assignments</span>
+                </a>
+                <a href="/admin_library.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-book-bookmark w-6 text-center text-lg"></i><span class="icon-text ml-4">Library</span>
+                </a>
+                <a href="/admin_create_panel.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sitemap w-6 text-center text-lg"></i><span class="icon-text ml-4">Create Panel</span>
+                </a>
+                <a href="/admin_offline_test.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-upload w-6 text-center text-lg"></i><span class="icon-text ml-4">Offline Test</span>
+                </a>
+                <a href="/admin_test_creation.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-file-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Online Test</span>
+                </a>
+                <a href="/admin_student_verify.html" class="flex items-center py-3 px-4 rounded-lg bg-white/10 text-white">
+                    <i class="fas fa-user-check w-6 text-center text-lg"></i><span class="icon-text ml-4 font-semibold">Student Verification</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <a href="#" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sign-out-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <main class="admin-main">
+                <!-- Header -->
+                <header class="mb-8">
+                    <h1 class="font-serif text-4xl font-bold text-text-dark">Student Verification</h1>
+                    <p class="text-md text-text-light mt-1">Review and approve new student registrations to grant them access.</p>
+                </header>
+
+                <!-- Verification List Card -->
+                <div class="card">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-text-dark">Pending Registrations</h3>
+                        <div id="verificationList" class="space-y-4">
+                            <!-- Example Student 1 -->
+                            <div class="verification-card flex flex-wrap justify-between items-center bg-gray-50 p-4 rounded-lg border">
+                                <div class="flex-grow mb-3 sm:mb-0">
+                                    <p class="font-bold text-lg text-text-dark">Rohan Verma</p>
+                                    <p class="text-sm text-text-light">rohan.v@email.com | Registered on: 15 Aug 2025</p>
+                                </div>
+                                <div class="flex gap-3">
+                                    <button class="verify-btn bg-teal-600 text-white font-bold py-2 px-5 rounded-lg shadow-sm hover:bg-teal-700 transition-colors flex items-center gap-2">
+                                        <i class="fas fa-check"></i> Verify
+                                    </button>
+                                    <button class="reject-btn bg-gray-500 text-white font-bold py-2 px-5 rounded-lg shadow-sm hover:bg-gray-600 transition-colors flex items-center gap-2">
+                                        <i class="fas fa-times"></i> Reject
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Example Student 2 -->
+                            <div class="verification-card flex flex-wrap justify-between items-center bg-gray-50 p-4 rounded-lg border">
+                                <div class="flex-grow mb-3 sm:mb-0">
+                                    <p class="font-bold text-lg text-text-dark">Priya Singh</p>
+                                    <p class="text-sm text-text-light">priya.singh@email.com | Registered on: 14 Aug 2025</p>
+                                </div>
+                                <div class="flex gap-3">
+                                    <button class="verify-btn bg-teal-600 text-white font-bold py-2 px-5 rounded-lg shadow-sm hover:bg-teal-700 transition-colors flex items-center gap-2">
+                                        <i class="fas fa-check"></i> Verify
+                                    </button>
+                                    <button class="reject-btn bg-gray-500 text-white font-bold py-2 px-5 rounded-lg shadow-sm hover:bg-gray-600 transition-colors flex items-center gap-2">
+                                        <i class="fas fa-times"></i> Reject
+                                    </button>
+                                </div>
+                            </div>
+                             <!-- Example Student 3 -->
+                            <div class="verification-card flex flex-wrap justify-between items-center bg-gray-50 p-4 rounded-lg border">
+                                <div class="flex-grow mb-3 sm:mb-0">
+                                    <p class="font-bold text-lg text-text-dark">Sameer Khan</p>
+                                    <p class="text-sm text-text-light">sameer.k@email.com | Registered on: 14 Aug 2025</p>
+                                </div>
+                                <div class="flex gap-3">
+                                    <button class="verify-btn bg-teal-600 text-white font-bold py-2 px-5 rounded-lg shadow-sm hover:bg-teal-700 transition-colors flex items-center gap-2">
+                                        <i class="fas fa-check"></i> Verify
+                                    </button>
+                                    <button class="reject-btn bg-gray-500 text-white font-bold py-2 px-5 rounded-lg shadow-sm hover:bg-gray-600 transition-colors flex items-center gap-2">
+                                        <i class="fas fa-times"></i> Reject
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Placeholder for when the list is empty -->
+                            <div id="empty-message" class="hidden text-center py-10">
+                                <i class="fas fa-inbox fa-3x text-gray-300 mb-4"></i>
+                                <p class="text-text-light">No pending registrations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Sidebar Toggle Functionality ---
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('collapsed');
+                });
+            }
+
+            // --- Verification Logic ---
+            const verificationList = document.getElementById('verificationList');
+            const emptyMessage = document.getElementById('empty-message');
+
+            const checkEmptyState = () => {
+                // Check if any verification-card elements are left
+                if (verificationList.querySelector('.verification-card')) {
+                    emptyMessage.classList.add('hidden');
+                } else {
+                    emptyMessage.classList.remove('hidden');
+                }
+            };
+
+            verificationList.addEventListener('click', (e) => {
+                const actionButton = e.target.closest('.verify-btn, .reject-btn');
+                
+                if (actionButton) {
+                    const card = actionButton.closest('.verification-card');
+                    if (card) {
+                        // Add a class to trigger the removal animation
+                        card.classList.add('removing');
+
+                        // Wait for the animation to finish before removing the element
+                        setTimeout(() => {
+                            card.remove();
+                            checkEmptyState(); // Check if the list is now empty
+                        }, 300); // This duration should match the CSS transition duration
+                    }
+                }
+            });
+            
+            // Initial check in case the list starts empty
+            checkEmptyState();
+        });
+    </script>
+</body>
+</html>

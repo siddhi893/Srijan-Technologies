@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration - Brilliant Minds Tuition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* --- Enhanced Color Palette & Font Setup (New Green Theme) --- */
+        :root {
+            --primary-bg: #FFFFFF; /* Main background, explicit white */
+            --secondary-bg-light-green: #D6EFD8; /* A very light green, for subtle variations */
+
+            --light-green-accent: #1F7D53; /* Lightest of the new greens, for highlights/accents */
+            --medium-green: #255F38; /* Medium green for main elements */
+            --dark-green: #27391C; /* Dark green for main text/sections */
+            --deep-dark-green: #18230F; /* Very dark green for deepest elements */
+
+            /* Re-mapping original variable names to new colors for consistency */
+            --light-cream: var(--primary-bg); /* Now white */
+            --oxford-blue: var(--medium-green); /* Used for titles, etc. */
+            --midnight-blue: var(--dark-green); /* Used for body text, dark sections */
+            --antique-gold: var(--light-green-accent); /* Used for highlights, primary buttons */
+            
+            /* Derived shades for gradients and specific elements */
+            --gold-light: #2A8C5D; /* Lighter variant of light-green-accent */
+            --gold-dark: #196F48; /* Darker variant of light-green-accent */
+            --navy-light: #307045; /* Lighter variant of medium-green */
+            --navy-dark: var(--deep-dark-green); /* Deepest dark green */
+
+            --white: #FFFFFF; /* Pure White */
+            --black: #000000; /* Pure Black */
+
+            /* Additional monochromatic greens for contrast */
+            --very-light-green: #EBF7EC; /* Even lighter green for text on dark backgrounds */
+            --text-on-dark: var(--primary-bg); /* White text on dark backgrounds */
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--secondary-bg-light-green); /* Light green background for registration page */
+            color: var(--dark-green);
+            line-height: 1.6;
+            font-weight: 400;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure full viewport height */
+        }
+        
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        /* Enhanced Color Classes */
+        .bg-light-cream { background-color: var(--primary-bg); }
+        .text-light-cream { color: var(--primary-bg); }
+        .bg-oxford-blue { background-color: var(--medium-green); }
+        .text-oxford-blue { color: var(--medium-green); }
+        .bg-midnight-blue { background-color: var(--dark-green); }
+        .text-midnight-blue { color: var(--dark-green); }
+        .bg-antique-gold { background-color: var(--light-green-accent); }
+        .text-antique-gold { color: var(--light-green-accent); }
+        .border-antique-gold { border-color: var(--light-green-accent); }
+
+        /* Luxury Button Styling */
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.875rem;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--light-green-accent), var(--gold-light));
+            color: var(--deep-dark-green);
+            box-shadow: 0 8px 25px rgba(31, 125, 83, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--gold-dark), var(--light-green-accent));
+            box-shadow: 0 15px 35px rgba(31, 125, 83, 0.4);
+        }
+        
+        /* Sophisticated Form Styling */
+        .luxury-form-input, .luxury-form-select, .luxury-form-textarea {
+            background-color: var(--white); /* White background for input */
+            border: 1px solid var(--medium-green); /* Border in medium green */
+            color: var(--dark-green); /* Text color in dark green */
+            transition: all 0.3s ease;
+            padding: 1rem 1.5rem; /* Adjusted padding for better look */
+            border-radius: 0.5rem;
+        }
+        
+        .luxury-form-input:focus, .luxury-form-select:focus, .luxury-form-textarea:focus {
+            border-color: var(--light-green-accent); /* Accent green on focus */
+            box-shadow: 0 0 0 3px rgba(31, 125, 83, 0.3); /* Accent green shadow */
+            outline: none;
+        }
+
+        .luxury-form-checkbox-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: var(--dark-green); /* Text color for checkboxes */
+            font-weight: 500;
+        }
+
+        .luxury-form-checkbox-group input[type="checkbox"] {
+            appearance: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid var(--medium-green); /* Checkbox border */
+            border-radius: 0.25rem;
+            margin-right: 0.75rem;
+            display: inline-block;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .luxury-form-checkbox-group input[type="checkbox"]:checked {
+            background-color: var(--light-green-accent); /* Checked background */
+            border-color: var(--light-green-accent);
+        }
+
+        .luxury-form-checkbox-group input[type="checkbox"]:checked::after {
+            content: '\2713'; /* Checkmark unicode */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--deep-dark-green); /* Checkmark color */
+            font-size: 0.875rem;
+        }
+
+        .luxury-form-radio-group label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: var(--dark-green); /* Text color for radio buttons */
+            font-weight: 500;
+        }
+
+        .luxury-form-radio-group input[type="radio"] {
+            appearance: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid var(--medium-green); /* Radio border */
+            border-radius: 50%;
+            margin-right: 0.75rem;
+            display: inline-block;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .luxury-form-radio-group input[type="radio"]:checked {
+            background-color: var(--light-green-accent); /* Checked background */
+            border-color: var(--light-green-accent);
+        }
+
+        .luxury-form-radio-group input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0.5rem;
+            height: 0.5rem;
+            background-color: var(--deep-dark-green); /* Inner circle color */
+            border-radius: 50%;
+        }
+
+        .file-upload-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            background-color: var(--medium-green); /* Button background */
+            color: var(--primary-bg); /* Button text color */
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .file-upload-btn:hover {
+            background-color: var(--navy-light); /* Darker green on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header for Registration Page -->
+    <header class="bg-midnight-blue text-light-cream py-4 px-6 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="font-serif text-2xl font-bold">Brilliant Minds Tuition</h1>
+            <nav>
+                <a href="home_page.html" class="text-light-cream/80 hover:text-antique-gold transition-colors duration-300 text-sm font-semibold">Back to Home</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content: Student Registration Form -->
+    <main class="flex-grow flex items-center justify-center py-16 px-4 bg-secondary-bg-light-green">
+        <div class="bg-white p-8 md:p-12 rounded-xl shadow-2xl max-w-3xl w-full text-center border-t-4 border-antique-gold">
+            <h2 class="font-serif text-4xl font-bold text-oxford-blue mb-8">Student Registration</h2>
+            <form class="space-y-8 text-left">
+                <!-- Personal Details Section -->
+                <div>
+                    <h3 class="font-serif text-2xl font-bold text-antique-gold mb-4">Personal Details</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="relative">
+                            <label for="studentName" class="block text-midnight-blue font-medium mb-2">Full Name</label>
+                            <input type="text" id="studentName" name="studentName" placeholder="Enter student's full name"
+                                   class="luxury-form-input w-full pl-12">
+                            <i class="fas fa-user absolute top-1/2 left-4 -translate-y-1/2 text-oxford-blue/70 mt-4"></i>
+                        </div>
+                        <div class="relative">
+                            <label for="studentEmail" class="block text-midnight-blue font-medium mb-2">Email Address</label>
+                            <input type="email" id="studentEmail" name="studentEmail" placeholder="student@example.com"
+                                   class="luxury-form-input w-full pl-12">
+                            <i class="fas fa-envelope absolute top-1/2 left-4 -translate-y-1/2 text-oxford-blue/70 mt-4"></i>
+                        </div>
+                        <div class="relative md:col-span-2">
+                            <label for="studentAddress" class="block text-midnight-blue font-medium mb-2">Address</label>
+                            <textarea id="studentAddress" name="studentAddress" rows="3" placeholder="Enter full address"
+                                      class="luxury-form-textarea w-full"></textarea>
+                        </div>
+                        <div class="relative">
+                            <label for="studentPhone" class="block text-midnight-blue font-medium mb-2">Phone Number</label>
+                            <input type="tel" id="studentPhone" name="studentPhone" placeholder="+123 456 7890"
+                                   class="luxury-form-input w-full pl-12">
+                            <i class="fas fa-phone absolute top-1/2 left-4 -translate-y-1/2 text-oxford-blue/70 mt-4"></i>
+                        </div>
+                        <div class="relative">
+                            <label for="studentDOB" class="block text-midnight-blue font-medium mb-2">Date of Birth</label>
+                            <input type="date" id="studentDOB" name="studentDOB"
+                                   class="luxury-form-input w-full pl-12">
+                            <i class="fas fa-calendar-alt absolute top-1/2 left-4 -translate-y-1/2 text-oxford-blue/70 mt-4"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parent Details Section -->
+                <div>
+                    <h3 class="font-serif text-2xl font-bold text-antique-gold mb-4">Parent/Guardian Details</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="relative">
+                            <label for="parentName" class="block text-midnight-blue font-medium mb-2">Parent/Guardian Name</label>
+                            <input type="text" id="parentName" name="parentName" placeholder="Enter parent's full name"
+                                   class="luxury-form-input w-full pl-12">
+                            <i class="fas fa-user-friends absolute top-1/2 left-4 -translate-y-1/2 text-oxford-blue/70 mt-4"></i>
+                        </div>
+                        <div class="relative">
+                            <label for="parentEmail" class="block text-midnight-blue font-medium mb-2">Parent Email</label>
+                            <input type="email" id="parentEmail" name="parentEmail" placeholder="parent@example.com"
+                                   class="luxury-form-input w-full pl-12">
+                            <i class="fas fa-envelope absolute top-1/2 left-4 -translate-y-1/2 text-oxford-blue/70 mt-4"></i>
+                        </div>
+                        <div class="relative">
+                            <label for="parentPhone" class="block text-midnight-blue font-medium mb-2">Parent Phone Number</label>
+                            <input type="tel" id="parentPhone" name="parentPhone" placeholder="+123 456 7890"
+                                   class="luxury-form-input w-full pl-12">
+                            <i class="fas fa-phone absolute top-1/2 left-4 -translate-y-1/2 text-oxford-blue/70 mt-4"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Details Section -->
+                <div>
+                    <h3 class="font-serif text-2xl font-bold text-antique-gold mb-4">Academic Information</h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="standard" class="block text-midnight-blue font-medium mb-2">Standard/Grade</label>
+                            <select id="standard" name="standard" class="luxury-form-select w-full">
+                                <option value="">Select Standard</option>
+                                <option value="8">8th Grade</option>
+                                <option value="9">9th Grade</option>
+                                <option value="10">10th Grade</option>
+                                <option value="11">11th Grade</option>
+                                <option value="12">12th Grade</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="relative">
+                            <label for="school" class="block text-midnight-blue font-medium mb-2">School Name</label>
+                            <input type="text" id="school" name="school" placeholder="Enter school name"
+                                   class="luxury-form-input w-full pl-12">
+                            <i class="fas fa-school absolute top-1/2 left-4 -translate-y-1/2 text-oxford-blue/70 mt-4"></i>
+                        </div>
+                        <div>
+                            <label for="board" class="block text-midnight-blue font-medium mb-2">Board</label>
+                            <select id="board" name="board" class="luxury-form-select w-full">
+                                <option value="">Select Board</option>
+                                <option value="CBSE">CBSE</option>
+                                <option value="ICSE">ICSE</option>
+                                <option value="State Board">State Board</option>
+                                <option value="IB">IB</option>
+                                <option value="Cambridge">Cambridge</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="batch" class="block text-midnight-blue font-medium mb-2">Preferred Batch</label>
+                            <select id="batch" name="batch" class="luxury-form-select w-full">
+                                <option value="">Select Batch</option>
+                                <option value="Morning">Morning (9 AM - 12 PM)</option>
+                                <option value="Afternoon">Afternoon (1 PM - 4 PM)</option>
+                                <option value="Evening">Evening (5 PM - 8 PM)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subject Selection Section -->
+                <div>
+                    <h3 class="font-serif text-2xl font-bold text-antique-gold mb-4">Subjects of Interest (Select all that apply)</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 luxury-form-checkbox-group">
+                        <label><input type="checkbox" name="subjects" value="Math"> Math</label>
+                        <label><input type="checkbox" name="subjects" value="Science"> Science</label>
+                        <label><input type="checkbox" name="subjects" value="Physics"> Physics</label>
+                        <label><input type="checkbox" name="subjects" value="Chemistry"> Chemistry</label>
+                        <label><input type="checkbox" name="subjects" value="Biology"> Biology</label>
+                        <label><input type="checkbox" name="subjects" value="English"> English</label>
+                        <label><input type="checkbox" name="subjects" value="History"> History</label>
+                        <label><input type="checkbox" name="subjects" value="Geography"> Geography</label>
+                        <label><input type="checkbox" name="subjects" value="Computer Science"> Computer Science</label>
+                        <label><input type="checkbox" name="subjects" value="Economics"> Economics</label>
+                    </div>
+                </div>
+
+                <!-- Fees & Payment Section -->
+                <div>
+                    <h3 class="font-serif text-2xl font-bold text-antique-gold mb-4">Fees & Payment</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-midnight-blue font-medium mb-2">Pay in Installments?</label>
+                            <div class="flex gap-6 luxury-form-radio-group">
+                                <label><input type="radio" name="installments" value="yes"> Yes</label>
+                                <label><input type="radio" name="installments" value="no" checked> No</label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-midnight-blue font-medium mb-2">Mode of Payment</label>
+                            <div class="flex gap-6 luxury-form-radio-group">
+                                <label><input type="radio" name="paymentMode" value="cash" id="paymentCash"> Cash</label>
+                                <label><input type="radio" name="paymentMode" value="online" id="paymentOnline" checked> Online</label>
+                            </div>
+                        </div>
+
+                        <!-- Conditional Payment Buttons (Initially both shown, can be toggled with JS) -->
+                        <div id="cashPaymentOptions" class="mt-4">
+                            <label class="block text-midnight-blue font-medium mb-2">Upload Cash Receipt</label>
+                            <label for="receiptUpload" class="file-upload-btn">
+                                <i class="fas fa-upload mr-2"></i> Upload Receipt
+                                <input type="file" id="receiptUpload" name="receiptUpload" accept=".pdf,.jpg,.jpeg,.png">
+                            </label>
+                            <p class="text-sm text-midnight-blue/70 mt-2">Accepted formats: PDF, JPG, PNG. Max size: 5MB.</p>
+                        </div>
+
+                        <div id="onlinePaymentOptions" class="mt-4">
+                            <label class="block text-midnight-blue font-medium mb-2">Proceed to Online Payment</label>
+                            <a href="online-payment-portal.html" target="_blank" class="btn btn-primary inline-flex items-center text-lg">
+                                <span class="relative z-10">Pay Online</span>
+                                <i class="fas fa-credit-card ml-3 relative z-10 group-hover:translate-x-2 transition-transform duration-300"></i>
+                            </a>
+                            <p class="text-sm text-midnight-blue/70 mt-2">You will be redirected to a secure payment gateway.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="text-center pt-8">
+                    <!-- <button type="submit" class="btn btn-primary text-lg px-12 py-4 group"> -->
+                    <button onclick = "location.href='student_dashboard.html'" type="button" class="btn btn-primary text-lg px-12 py-4 group">
+                        <span class="relative z-10">Register Student</span>
+                        <i class="fas fa-user-plus ml-3 relative z-10 group-hover:translate-x-2 transition-transform duration-300"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer for Registration Page -->
+    <footer class="bg-midnight-blue text-light-cream py-6 px-6 shadow-md mt-auto">
+        <div class="container mx-auto text-center">
+            <p class="text-sm opacity-80">&copy; 2025 Brilliant Minds Tuition. Developed by Your Name Here.</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for conditional display of payment options
+        const paymentModeRadios = document.querySelectorAll('input[name="paymentMode"]');
+        const cashOptions = document.getElementById('cashPaymentOptions');
+        const onlineOptions = document.getElementById('onlinePaymentOptions');
+
+        function togglePaymentOptions() {
+            if (document.getElementById('paymentCash').checked) {
+                cashOptions.style.display = 'block';
+                onlineOptions.style.display = 'none';
+            } else {
+                cashOptions.style.display = 'none';
+                onlineOptions.style.display = 'block';
+            }
+        }
+
+        // Add event listeners
+        paymentModeRadios.forEach(radio => {
+            radio.addEventListener('change', togglePaymentOptions);
+        });
+
+        // Initial call to set correct display on load
+        togglePaymentOptions();
+    </script>
+</body>
+</html>

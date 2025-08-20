@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* Admin/Faculty Theme */
+            --sidebar-bg: #0D2B28; /* Dark Teal */
+            --primary-teal: #14746F;
+            --light-teal-bg: #E0F2F1;
+            
+            --text-dark: #212529;
+            --text-light: #6C757D;
+            --bg-color: #F8F9FA;
+            --border-color: #DEE2E6;
+            --white-color: #FFFFFF;
+            --success-color: #16A34A;
+            --danger-color: #DC2626;
+            --warning-color: #FBBF24;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* --- Main Layout --- */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            width: 16rem;
+            transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 30;
+            overflow-y: auto;
+        }
+        .sidebar.collapsed { width: 5rem; }
+
+        /* --- Custom Scrollbar for Sidebar --- */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #2c5d58; /* A slightly lighter shade of the sidebar */
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #3a7a73;
+        }
+
+
+        .content-wrapper {
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .admin-main {
+            padding: 2rem 2.5rem;
+        }
+        
+        .card {
+            background-color: var(--white-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+        }
+        
+        /* Attendance Button Styling */
+        .attendance-btn-group label input:checked + div {
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .present-checked { background-color: var(--success-color) !important; color: white !important; border-color: var(--success-color) !important; }
+        .absent-checked { background-color: var(--danger-color) !important; color: white !important; border-color: var(--danger-color) !important; }
+        .late-checked { background-color: var(--warning-color) !important; color: white !important; border-color: var(--warning-color) !important; }
+        
+        /* Clickable Row Styling */
+        .student-row {
+            transition: background-color 0.2s ease-in-out;
+        }
+        .student-row:hover {
+            background-color: #f9fafb; /* A very light gray */
+            cursor: pointer;
+        }
+
+        .sidebar.collapsed .icon-text { opacity: 0; width: 0; }
+        .sidebar.collapsed .sidebar-toggle i { transform: rotate(180deg); }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+            .sidebar.open { transform: translateX(0); }
+            #mobileMenuButton { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar flex flex-col p-4 text-gray-200">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-user-shield text-3xl text-white"></i>
+                    <span class="font-serif text-2xl font-bold whitespace-nowrap icon-text">Admin Panel</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle hidden lg:block cursor-pointer p-2 rounded-full hover:bg-white/10">
+                    <i class="fas fa-chevron-left transition-transform duration-300"></i>
+                </button>
+            </div>
+            <nav class="mt-10 space-y-2 flex-grow">
+                <a href="/admin_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-tachometer-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Dashboard</span>
+                </a>
+                <a href="/admin_student_filter_page.html" class="flex items-center py-3 px-4 rounded-lg bg-white/10 text-white">
+                    <i class="fas fa-users w-6 text-center text-lg"></i><span class="icon-text ml-4 font-semibold">Students</span>
+                </a>
+                <a href="/admin_faculty_list.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-chalkboard-teacher w-6 text-center text-lg"></i><span class="icon-text ml-4">Faculty</span>
+                </a>
+                <a href="/admin_announcement_maker.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-bullhorn w-6 text-center text-lg"></i><span class="icon-text ml-4">Announcements</span>
+                </a>
+                <a href="/admin_assignments.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-list w-6 text-center text-lg"></i><span class="icon-text ml-4">Assignments</span>
+                </a>
+                <a href="/admin_library.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-book-bookmark w-6 text-center text-lg"></i><span class="icon-text ml-4">Library</span>
+                </a>
+                <a href="/admin_create_panel.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sitemap w-6 text-center text-lg"></i><span class="icon-text ml-4">Create Panel</span>
+                </a>
+                <a href="/admin_offline_test.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-upload w-6 text-center text-lg"></i><span class="icon-text ml-4">Offline Test</span>
+                </a>
+                <a href="/admin_test_creation.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-file-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Online Test</span>
+                </a>
+                <a href="/admin_student_verify.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-user-check w-6 text-center text-lg"></i><span class="icon-text ml-4">Student Verification</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <a href="#" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sign-out-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <main class="admin-main">
+                <!-- Header -->
+                <header class="mb-8 flex flex-wrap justify-between items-center gap-4">
+                    <div>
+                        <h1 class="font-serif text-4xl font-bold text-text-dark">Student Roster & Attendance</h1>
+                        <p class="text-md text-text-light mt-1">Filter students and mark daily attendance.</p>
+                    </div>
+                    <a href="admin_classwise_attendance.html" class="bg-white border border-gray-300 text-text-dark font-semibold py-2 px-5 rounded-lg shadow-sm hover:bg-gray-50 transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-users-viewfinder"></i>
+                        <span>Classwise View</span>
+                    </a>
+                </header>
+
+                <!-- Filters Card -->
+                <div class="card p-6 mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                        <!-- Search Bar -->
+                        <div class="lg:col-span-3">
+                            <label for="search-filter" class="block text-sm font-medium text-gray-700">Search Student</label>
+                            <div class="relative mt-1">
+                                <input type="text" id="search-filter" placeholder="Enter name or ID..." class="w-full pl-10 pr-4 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                                <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <!-- Standard Filter -->
+                        <div>
+                            <label for="standard-filter" class="block text-sm font-medium text-gray-700">Standard</label>
+                            <select id="standard-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                                <option>All Standards</option>
+                                <option>11th</option>
+                                <option>12th</option>
+                            </select>
+                        </div>
+                        <!-- School Filter -->
+                        <div>
+                            <label for="school-filter" class="block text-sm font-medium text-gray-700">School</label>
+                            <select id="school-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                                <option>All Schools</option>
+                                <option>Smt. Sulochanadevi Singhania</option>
+                                <option>D.A.V. Public School</option>
+                            </select>
+                        </div>
+                        <!-- Branch Filter -->
+                        <div>
+                            <label for="branch-filter" class="block text-sm font-medium text-gray-700">Branch</label>
+                            <select id="branch-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                                <option>All Branches</option>
+                                <option>Thane</option>
+                                <option>Mumbai</option>
+                            </select>
+                        </div>
+                        <!-- Board Filter -->
+                        <div>
+                            <label for="board-filter" class="block text-sm font-medium text-gray-700">Board</label>
+                            <select id="board-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                                <option>All Boards</option>
+                                <option>CBSE</option>
+                                <option>ICSE</option>
+                                <option>SSC</option>
+                            </select>
+                        </div>
+                        <!-- Date Filter -->
+                        <div>
+                            <label for="date-filter" class="block text-sm font-medium text-gray-700">Date</label>
+                            <input type="date" id="date-filter" value="2025-08-20" class="mt-1 block w-full pl-3 pr-2 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Student Table -->
+                <div class="card p-6">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="border-b-2 border-gray-200">
+                                <tr>
+                                    <th class="p-3 text-sm font-semibold text-text-light">Student Name</th>
+                                    <th class="p-3 text-sm font-semibold text-text-light">Student ID</th>
+                                    <th class="p-3 text-sm font-semibold text-text-light">Standard</th>
+                                    <th class="p-3 text-sm font-semibold text-text-light text-center">Attendance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="student-table-body">
+                                <!-- Student Row 1 -->
+                                <tr class="border-b border-gray-100 student-row" data-name="Ananya S. Sharma" data-id="BMS-10234" data-href="admin_student_profile.html">
+                                    <td class="p-4 font-medium">Ananya S. Sharma</td>
+                                    <td class="p-4 text-text-light">BMS-10234</td>
+                                    <td class="p-4 text-text-light">11th</td>
+                                    <td class="p-4">
+                                        <div class="flex justify-center items-center gap-2 attendance-btn-group">
+                                            <label><input type="radio" name="student_1" class="hidden"><div class="w-10 h-10 flex items-center justify-center rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 transition-all" title="Present"><i class="fa-solid fa-check text-green-600"></i></div></label>
+                                            <label><input type="radio" name="student_1" class="hidden"><div class="w-10 h-10 flex items-center justify-center rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 transition-all" title="Absent"><i class="fa-solid fa-times text-red-600"></i></div></label>
+                                            <label><input type="radio" name="student_1" class="hidden"><div class="w-10 h-10 flex items-center justify-center rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 transition-all" title="Late"><i class="fa-solid fa-clock text-yellow-500"></i></div></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Student Row 2 -->
+                                <tr class="border-b border-gray-100 student-row" data-name="Rohan Verma" data-id="BMS-10235" data-href="admin_student_profile.html">
+                                    <td class="p-4 font-medium">Rohan Verma</td>
+                                    <td class="p-4 text-text-light">BMS-10235</td>
+                                    <td class="p-4 text-text-light">11th</td>
+                                    <td class="p-4">
+                                        <div class="flex justify-center items-center gap-2 attendance-btn-group">
+                                            <label><input type="radio" name="student_2" class="hidden"><div class="w-10 h-10 flex items-center justify-center rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 transition-all" title="Present"><i class="fa-solid fa-check text-green-600"></i></div></label>
+                                            <label><input type="radio" name="student_2" class="hidden"><div class="w-10 h-10 flex items-center justify-center rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 transition-all" title="Absent"><i class="fa-solid fa-times text-red-600"></i></div></label>
+                                            <label><input type="radio" name="student_2" class="hidden"><div class="w-10 h-10 flex items-center justify-center rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 transition-all" title="Late"><i class="fa-solid fa-clock text-yellow-500"></i></div></label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-6 text-right">
+                        <button class="bg-teal-700 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-teal-800 transition-colors">Save Attendance</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+            });
+
+            // Attendance button active state logic
+            const attendanceGroups = document.querySelectorAll('.attendance-btn-group');
+            attendanceGroups.forEach(group => {
+                const radios = group.querySelectorAll('input[type="radio"]');
+                radios.forEach((radio, index) => {
+                    radio.addEventListener('change', () => {
+                        // Reset styles for all buttons in the group
+                        radios.forEach(r => {
+                            const div = r.nextElementSibling;
+                            div.classList.remove('present-checked', 'absent-checked', 'late-checked');
+                        });
+                        // Apply active style to the selected one
+                        if (radio.checked) {
+                            const div = radio.nextElementSibling;
+                            if (index === 0) div.classList.add('present-checked');
+                            else if (index === 1) div.classList.add('absent-checked');
+                            else if (index === 2) div.classList.add('late-checked');
+                        }
+                    });
+                });
+            });
+
+            // Search functionality
+            const searchInput = document.getElementById('search-filter');
+            const studentRows = document.querySelectorAll('.student-row');
+
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                studentRows.forEach(row => {
+                    const name = row.dataset.name.toLowerCase();
+                    const id = row.dataset.id.toLowerCase();
+                    if (name.includes(searchTerm) || id.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+
+            // Clickable student rows
+            studentRows.forEach(row => {
+                row.addEventListener('click', (e) => {
+                    // Make sure the click is not on the attendance buttons
+                    if (!e.target.closest('.attendance-btn-group')) {
+                        const href = row.dataset.href;
+                        if (href) {
+                            window.location.href = href;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

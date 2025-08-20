@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Status - Brilliant Minds Tuition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* Student Dashboard Custom Dark Blue Theme */
+            --sidebar-bg: #1B3C53; /* User's custom dark blue */
+            --primary-blue: #1B3C53; /* Using the same color for accents */
+            --light-blue-bg: #EBF2F8; /* A complementary light blue-gray */
+            
+            --text-dark: #212529;
+            --text-light: #6C757D;
+            --bg-color: #F8F9FA;
+            --border-color: #DEE2E6;
+            --white-color: #FFFFFF;
+            --danger-color: #DC2626;
+            --warning-color: #F59E0B;
+            --success-color: #16A34A;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* --- Main Layout --- */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            width: 16rem;
+            transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 30;
+            overflow-y: auto; /* Ensures sidebar is scrollable */
+        }
+        .sidebar.collapsed { width: 5rem; }
+
+        /* --- Custom Scrollbar for Sidebar --- */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #2c5d8a; /* A slightly lighter shade of the sidebar blue */
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #3e80c2;
+        }
+
+        .content-wrapper {
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .fees-main {
+            padding: 2rem 2.5rem;
+        }
+        
+        .card {
+            background-color: var(--white-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+        }
+        
+        .payment-option:has(input:checked) {
+            border-color: var(--primary-blue);
+            background-color: var(--light-blue-bg);
+        }
+
+        .sidebar.collapsed .icon-text { opacity: 0; width: 0; }
+        .sidebar.collapsed .sidebar-toggle i { transform: rotate(180deg); }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+            .sidebar.open { transform: translateX(0); }
+            #mobileMenuButton { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar flex flex-col p-4 text-gray-200">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-graduation-cap text-3xl text-white"></i>
+                    <span class="font-serif text-2xl font-bold whitespace-nowrap icon-text">Brilliant Minds</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle hidden lg:block cursor-pointer p-2 rounded-full hover:bg-white/10">
+                    <i class="fas fa-chevron-left transition-transform duration-300"></i>
+                </button>
+            </div>
+            <nav class="mt-10 space-y-2 flex-grow">
+                <a href="student_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-tachometer-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Dashboard</span>
+                </a>
+                <a href="attendance_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-user w-6 text-center text-lg"></i><span class="icon-text ml-4">Attendance</span>
+                </a>
+                <a href="assignments_page.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-list w-6 text-center text-lg"></i><span class="icon-text ml-4">Assignments</span>
+                </a>
+                <a href="e_library.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-book-bookmark w-6 text-center text-lg"></i><span class="icon-text ml-4">Library</span>
+                </a>
+                <a href="fee_payment.html" class="flex items-center py-3 px-4 rounded-lg bg-white/10 text-white">
+                    <i class="fas fa-money-check-dollar w-6 text-center text-lg"></i><span class="icon-text ml-4 font-semibold">Fee Payment</span>
+                </a>
+                <a href="test_section.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-file-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Test Portal</span>
+                </a>
+                <a href="student_profile.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-user-circle w-6 text-center text-lg"></i><span class="icon-text ml-4">Profile</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <a href="#" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sign-out-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <main class="fees-main">
+                <!-- Header -->
+                <header class="mb-8">
+                    <h1 class="font-serif text-4xl font-bold text-text-dark">Fee Status & Payments</h1>
+                    <p class="text-md text-text-light mt-1">View your payment history and clear outstanding dues.</p>
+                </header>
+
+                <!-- Fee Summary -->
+                <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="card p-5">
+                        <p class="text-sm text-text-light font-medium">Total Annual Fee</p>
+                        <p class="text-3xl font-bold mt-1">₹1,20,000</p>
+                    </div>
+                    <div class="card p-5">
+                        <p class="text-sm text-text-light font-medium">Total Paid</p>
+                        <p class="text-3xl font-bold text-green-600 mt-1">₹90,000</p>
+                    </div>
+                    <div class="card p-5 bg-red-50 border-red-200">
+                        <p class="text-sm text-red-700 font-medium">Amount Due</p>
+                        <p class="text-3xl font-bold text-danger-color mt-1">₹30,000</p>
+                    </div>
+                </section>
+
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                    <!-- Payment History -->
+                    <div class="lg:col-span-3 card p-6">
+                        <h2 class="font-serif text-xl font-bold text-text-dark mb-4 border-b pb-3">Payment History</h2>
+                        <div class="space-y-4">
+                            <!-- History Item 1 -->
+                            <div class="flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50">
+                                <i class="fa-solid fa-receipt text-xl text-green-500 mt-1"></i>
+                                <div class="flex-grow">
+                                    <p class="font-semibold">Installment 3</p>
+                                    <p class="text-sm text-text-light">Paid on July 15, 2025 via Online</p>
+                                </div>
+                                <p class="font-bold text-lg">₹30,000</p>
+                            </div>
+                            <!-- History Item 2 with Receipt -->
+                            <div class="flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50">
+                                <i class="fa-solid fa-receipt text-xl text-green-500 mt-1"></i>
+                                <div class="flex-grow">
+                                    <p class="font-semibold">Installment 2</p>
+                                    <p class="text-sm text-text-light">Paid on April 10, 2025 via Bank Transfer</p>
+                                    <a href="#" class="text-sm font-semibold hover:underline" style="color: var(--primary-blue);">View Receipt</a>
+                                </div>
+                                <p class="font-bold text-lg">₹30,000</p>
+                            </div>
+                            <!-- History Item 3 -->
+                            <div class="flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50">
+                                <i class="fa-solid fa-receipt text-xl text-green-500 mt-1"></i>
+                                <div class="flex-grow">
+                                    <p class="font-semibold">Installment 1</p>
+                                    <p class="text-sm text-text-light">Paid on Jan 05, 2025 via Online</p>
+                                </div>
+                                <p class="font-bold text-lg">₹30,000</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Make a Payment -->
+                    <div class="lg:col-span-2 card p-6">
+                        <h2 class="font-serif text-xl font-bold text-text-dark mb-4 border-b pb-3">Pay Outstanding Fees</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="font-semibold text-text-dark">Select Payment Amount</label>
+                                <div class="mt-2 space-y-2">
+                                    <label class="payment-option block p-3 border-2 border-gray-200 rounded-lg cursor-pointer">
+                                        <input type="radio" id="full_amount_radio" name="payment_amount" class="hidden" checked>
+                                        <p class="font-bold">Pay Full Amount: ₹30,000</p>
+                                    </label>
+                                    <label class="payment-option block p-3 border-2 border-gray-200 rounded-lg cursor-pointer">
+                                        <input type="radio" id="custom_amount_radio" name="payment_amount" class="hidden">
+                                        <p class="font-bold">Pay Custom Amount</p>
+                                        <div class="relative mt-2">
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 font-semibold text-gray-500">₹</span>
+                                            <input type="number" id="custom_amount_input" placeholder="Enter amount" class="w-full pl-7 pr-3 py-2 border-gray-300 rounded-md focus:ring-primary-blue focus:border-primary-blue">
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="font-semibold text-text-dark">Select Mode of Payment</label>
+                                <div class="mt-2">
+                                    <button class="w-full p-4 rounded-lg text-white hover:opacity-90 transition-opacity flex items-center justify-center gap-3" style="background-color: var(--primary-blue);">
+                                        <i class="fa-solid fa-credit-card"></i>
+                                        <span class="font-semibold">Pay Online (Cards, UPI, etc.)</span>
+                                        <i class="fa-solid fa-arrow-right ml-auto"></i>
+                                    </button>
+                                    <div class="text-center my-2 text-text-light text-sm">OR</div>
+                                    <div class="text-center p-4 rounded-lg bg-gray-100">
+                                        <p class="font-medium">Pay via Cash / Bank Transfer</p>
+                                        <p class="text-sm text-text-light mt-1">Deposit the amount and upload the receipt below.</p>
+                                        <button class="mt-3 w-full bg-white border border-gray-300 py-2 px-4 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-2">
+                                            <i class="fa-solid fa-upload"></i>
+                                            <span>Upload Receipt</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+            });
+
+            // Payment amount logic
+            const customAmountInput = document.getElementById('custom_amount_input');
+            const customAmountRadio = document.getElementById('custom_amount_radio');
+            const fullAmountRadio = document.getElementById('full_amount_radio');
+
+            customAmountInput.addEventListener('focus', () => {
+                customAmountRadio.checked = true;
+            });
+            customAmountInput.addEventListener('input', () => {
+                customAmountRadio.checked = true;
+            });
+            fullAmountRadio.addEventListener('change', () => {
+                if(fullAmountRadio.checked) {
+                    customAmountInput.value = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

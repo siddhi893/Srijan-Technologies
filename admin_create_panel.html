@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entity Management - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* Admin/Faculty Theme */
+            --sidebar-bg: #0D2B28; /* Dark Teal */
+            --primary-teal: #14746F;
+            --light-teal-bg: #E0F2F1;
+            
+            --text-dark: #212529;
+            --text-light: #6C757D;
+            --bg-color: #F8F9FA;
+            --border-color: #DEE2E6;
+            --white-color: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* --- Main Layout --- */
+        .dashboard-layout {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            background-color: var(--sidebar-bg);
+            width: 16rem;
+            transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 30;
+            overflow-y: auto; /* Added for scrolling */
+        }
+        .sidebar.collapsed { width: 5rem; }
+
+        /* --- Custom Scrollbar for Sidebar --- */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: #2c5d58; /* A slightly lighter shade of the sidebar */
+            border-radius: 10px;
+        }
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: #3a7a73;
+        }
+
+        .content-wrapper {
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .admin-main {
+            padding: 2rem 2.5rem;
+        }
+        
+        .card {
+            background-color: var(--white-color);
+            border: 1px solid var(--border-color);
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+        }
+        
+        .sidebar.collapsed .icon-text { opacity: 0; width: 0; }
+        .sidebar.collapsed .sidebar-toggle i { transform: rotate(180deg); }
+        
+        /* --- Tab Styles --- */
+        .tab-button.active {
+            border-color: var(--primary-teal);
+            background-color: var(--light-teal-bg);
+            color: var(--primary-teal);
+            font-weight: 600;
+        }
+        .tab-pane {
+            display: none;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                transform: translateX(-100%);
+            }
+            .sidebar.open { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar flex flex-col p-4 text-gray-200">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3 overflow-hidden">
+                    <i class="fa-solid fa-user-shield text-3xl text-white"></i>
+                    <span class="font-serif text-2xl font-bold whitespace-nowrap icon-text">Admin Panel</span>
+                </div>
+                <button id="sidebarToggle" class="sidebar-toggle hidden lg:block cursor-pointer p-2 rounded-full hover:bg-white/10">
+                    <i class="fas fa-chevron-left transition-transform duration-300"></i>
+                </button>
+            </div>
+            <nav class="mt-10 space-y-2 flex-grow">
+                <a href="/admin_dashboard.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-tachometer-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Dashboard</span>
+                </a>
+                <a href="/admin_student_filter_page.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-users w-6 text-center text-lg"></i><span class="icon-text ml-4">Students</span>
+                </a>
+                <a href="/admin_faculty_list.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-chalkboard-teacher w-6 text-center text-lg"></i><span class="icon-text ml-4">Faculty</span>
+                </a>
+                <a href="/admin_announcement_maker.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-bullhorn w-6 text-center text-lg"></i><span class="icon-text ml-4">Announcements</span>
+                </a>
+                <a href="/admin_assignments.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-clipboard-list w-6 text-center text-lg"></i><span class="icon-text ml-4">Assignments</span>
+                </a>
+                <a href="/admin_library.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-book-bookmark w-6 text-center text-lg"></i><span class="icon-text ml-4">Library</span>
+                </a>
+                <a href="/admin_create_panel.html" class="flex items-center py-3 px-4 rounded-lg bg-white/10 text-white">
+                    <i class="fas fa-sitemap w-6 text-center text-lg"></i><span class="icon-text ml-4 font-semibold">Create Panel</span>
+                </a>
+                <a href="/admin_offline_test.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-upload w-6 text-center text-lg"></i><span class="icon-text ml-4">Offline Test</span>
+                </a>
+                <a href="/admin_test_creation.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-file-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Online Test</span>
+                </a>
+                <a href="/admin_student_verify.html" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-user-check w-6 text-center text-lg"></i><span class="icon-text ml-4">Student Verification</span>
+                </a>
+            </nav>
+            <div class="mt-auto">
+                <a href="#" class="flex items-center py-3 px-4 rounded-lg hover:bg-white/10">
+                    <i class="fas fa-sign-out-alt w-6 text-center text-lg"></i><span class="icon-text ml-4">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        
+        <!-- Main Content Area -->
+        <div class="content-wrapper">
+            <main class="admin-main">
+                <!-- Header -->
+                <header class="mb-8">
+                    <h1 class="font-serif text-4xl font-bold text-text-dark">Entity Management</h1>
+                    <p class="text-md text-text-light mt-1">Create, view, and manage key entities like faculty, batches, schools, and courses.</p>
+                </header>
+
+                <!-- Entity Management Card -->
+                <div class="card">
+                    <!-- Tab Navigation -->
+                    <div class="border-b border-gray-200">
+                        <nav id="entityTabs" class="flex -mb-px p-4 space-x-1 sm:space-x-4" aria-label="Tabs">
+                            <button data-target="faculty" class="tab-button active whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm rounded-t-lg">
+                                <i class="fas fa-chalkboard-teacher mr-2"></i> Faculty
+                            </button>
+                            <button data-target="batch" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm rounded-t-lg">
+                                <i class="fas fa-users-class mr-2"></i> Batch
+                            </button>
+                            <button data-target="school" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm rounded-t-lg">
+                                <i class="fas fa-school mr-2"></i> School
+                            </button>
+                            <button data-target="course" class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm rounded-t-lg">
+                                <i class="fas fa-book-open mr-2"></i> Course
+                            </button>
+                        </nav>
+                    </div>
+
+                    <div class="p-6">
+                        <!-- Faculty Pane -->
+                        <div id="faculty" class="tab-pane active">
+                            <h3 class="text-lg font-semibold mb-4">Create New Faculty</h3>
+                            <div class="flex gap-4 mb-6">
+                                <input type="text" id="facultyName" placeholder="Faculty Name" class="flex-grow block w-full text-base border-gray-300 focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                                <button id="addFacultyBtn" class="bg-teal-700 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-teal-800 transition-colors">Add Faculty</button>
+                            </div>
+                            <hr class="my-6">
+                            <h3 class="text-lg font-semibold mb-4">Existing Faculty</h3>
+                            <div id="facultyList" class="space-y-3">
+                                <!-- Example Item -->
+                                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border">
+                                    <span class="font-medium">Dr. Anjali Sharma</span>
+                                    <button class="delete-btn text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Batch Pane -->
+                        <div id="batch" class="tab-pane">
+                            <h3 class="text-lg font-semibold mb-4">Create New Batch</h3>
+                            <div class="flex gap-4 mb-6">
+                                <input type="text" id="batchName" placeholder="Batch Name (e.g., 12th CBSE A)" class="flex-grow block w-full text-base border-gray-300 focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                                <button id="addBatchBtn" class="bg-teal-700 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-teal-800 transition-colors">Add Batch</button>
+                            </div>
+                            <hr class="my-6">
+                            <h3 class="text-lg font-semibold mb-4">Existing Batches</h3>
+                            <div id="batchList" class="space-y-3">
+                                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border">
+                                    <span class="font-medium">12th CBSE A - NEET</span>
+                                    <button class="delete-btn text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border">
+                                    <span class="font-medium">11th ICSE - JEE</span>
+                                    <button class="delete-btn text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- School Pane -->
+                        <div id="school" class="tab-pane">
+                            <h3 class="text-lg font-semibold mb-4">Create New School</h3>
+                            <div class="flex gap-4 mb-6">
+                                <input type="text" id="schoolName" placeholder="School Name" class="flex-grow block w-full text-base border-gray-300 focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                                <button id="addSchoolBtn" class="bg-teal-700 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-teal-800 transition-colors">Add School</button>
+                            </div>
+                            <hr class="my-6">
+                            <h3 class="text-lg font-semibold mb-4">Existing Schools</h3>
+                            <div id="schoolList" class="space-y-3">
+                                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border">
+                                    <span class="font-medium">Smt. Sulochanadevi Singhania School</span>
+                                    <button class="delete-btn text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Course Pane -->
+                        <div id="course" class="tab-pane">
+                            <h3 class="text-lg font-semibold mb-4">Create New Course</h3>
+                            <div class="flex gap-4 mb-6">
+                                <input type="text" id="courseName" placeholder="Course Name" class="flex-grow block w-full text-base border-gray-300 focus:ring-primary-teal focus:border-primary-teal sm:text-sm rounded-md">
+                                <button id="addCourseBtn" class="bg-teal-700 text-white font-bold py-2 px-6 rounded-lg shadow-md hover:bg-teal-800 transition-colors">Add Course</button>
+                            </div>
+                            <hr class="my-6">
+                            <h3 class="text-lg font-semibold mb-4">Existing Courses</h3>
+                            <div id="courseList" class="space-y-3">
+                                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border">
+                                    <span class="font-medium">JEE Mains</span>
+                                    <button class="delete-btn text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                                 <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg border">
+                                    <span class="font-medium">NEET</span>
+                                    <button class="delete-btn text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Sidebar Toggle Functionality ---
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('collapsed');
+                });
+            }
+
+            // --- Tab Switching Functionality ---
+            const tabs = document.querySelectorAll('.tab-button');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Deactivate all tabs and panes
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabPanes.forEach(p => p.classList.remove('active'));
+
+                    // Activate clicked tab and corresponding pane
+                    tab.classList.add('active');
+                    const targetPane = document.getElementById(tab.dataset.target);
+                    if (targetPane) {
+                        targetPane.classList.add('active');
+                    }
+                });
+            });
+
+            // --- Generic Entity Management Function ---
+            const setupEntityManagement = (addBtnId, inputId, listId) => {
+                const addButton = document.getElementById(addBtnId);
+                const inputField = document.getElementById(inputId);
+                const entityList = document.getElementById(listId);
+
+                // Function to add a new entity
+                const addEntity = () => {
+                    const entityName = inputField.value.trim();
+                    if (entityName === '') {
+                        alert('Please enter a name.');
+                        return;
+                    }
+
+                    const newEntity = document.createElement('div');
+                    newEntity.className = 'flex justify-between items-center bg-gray-50 p-3 rounded-lg border';
+                    newEntity.innerHTML = `
+                        <span class="font-medium">${entityName}</span>
+                        <button class="delete-btn text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                    `;
+                    entityList.appendChild(newEntity);
+                    inputField.value = ''; // Clear input
+                };
+
+                // Add entity on button click
+                addButton.addEventListener('click', addEntity);
+
+                // Add entity on Enter key press
+                inputField.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        addEntity();
+                    }
+                });
+
+                // Function to delete an entity (using event delegation)
+                entityList.addEventListener('click', (e) => {
+                    // Find the closest delete button to where the user clicked
+                    const deleteButton = e.target.closest('.delete-btn');
+                    if (deleteButton) {
+                        // Find the parent card and remove it
+                        deleteButton.closest('.flex').remove();
+                    }
+                });
+            };
+
+            // --- Initialize for all entity types ---
+            setupEntityManagement('addFacultyBtn', 'facultyName', 'facultyList');
+            setupEntityManagement('addBatchBtn', 'batchName', 'batchList');
+            setupEntityManagement('addSchoolBtn', 'schoolName', 'schoolList');
+            setupEntityManagement('addCourseBtn', 'courseName', 'courseList');
+        });
+    </script>
+</body>
+</html>
